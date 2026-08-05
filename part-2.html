@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f0e6">
+  <meta name="description" content="Valley2 之后我们又卡住了。GThinker、OCR hallucination 和 PTS 不是提前画好的路线，只是那团没有说清的疑惑，慢慢长出来的三个工作。">
+  <title>模型会说以后，为什么还不会看：从 Language Interface 到 Agentic Perception</title>
+  <link rel="stylesheet" href="styles.css?v=4c42d27b765a">
+  <script src="script.js?v=72d3760acf1b" defer></script>
+</head>
+<body data-part="2">
+  <a class="skip-link" href="#main-content">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span class="reading-progress__bar"></span></div>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-brand" href="index.html">
+        <span>ACV</span>
+        <strong>From inductive bias to semantic, finally Agentic computer vision</strong>
+      </a>
+      <nav class="part-switcher" aria-label="文章上下篇">
+        <a href="index.html" >Part I</a>
+        <a href="part-2.html" aria-current="page">Part II</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <article>
+      <header class="hero">
+        <p class="hero__eyebrow">Part II · 2025–2026</p>
+        <h1>模型会说以后，为什么还不会看</h1>
+        <p class="hero__subtitle">从 Language Interface 到 Agentic Perception</p>
+        <p class="hero__description">Valley2 之后我们又卡住了。GThinker、OCR hallucination 和 PTS 不是提前画好的路线，只是那团没有说清的疑惑，慢慢长出来的三个工作。</p>
+        <div class="hero__meta">
+          <span>持续整理中的工作笔记</span>
+          <span>约 21 分钟阅读</span>
+          <time datetime="2026-08-03">2026-08-03</time>
+        </div>
+        <p class="hero__opening">VLM 已经能用自然语言回答开放问题，可它能解决的视觉问题，与文本模型能解决的问题之间仍然有天壤之别。下篇从这团没有说清的疑惑出发，走到 2026 年我第一次真正觉得“也许有办法”的时刻。</p>
+      </header>
+
+      
+
+      
+
+      <details class="mobile-toc">
+        <summary>本篇目录 · 5 章</summary>
+        
+    <nav class="mobile-toc__nav" aria-label="本篇目录">
+      <p class="toc-title">目录</p>
+      <ol>
+        <li><a class="toc-link" href="#r1-meta-ability"><span class="toc-index">01</span><span class="toc-label">R1 之后：组合本身也是一种能力</span></a></li><li><a class="toc-link" href="#fractal-problem"><span class="toc-index">02</span><span class="toc-label">第二个问题：固定观察下的“分形问题”</span></a></li><li><a class="toc-link" href="#three-probes"><span class="toc-index">03</span><span class="toc-label">2025：三个工作，和一团没有说清的疑惑</span></a></li><li><a class="toc-link" href="#moving-solution"><span class="toc-index">04</span><span class="toc-label">2026：从“静止”的问题走向“运动”的求解</span></a></li><li><a class="toc-link" href="#current-thesis"><span class="toc-index">05</span><span class="toc-label">结语：One Song Glory</span></a></li>
+      </ol>
+    </nav>
+      </details>
+
+      <div class="article-shell">
+        
+    <nav class="desktop-toc" aria-label="本篇目录">
+      <p class="toc-title">目录</p>
+      <ol>
+        <li><a class="toc-link" href="#r1-meta-ability"><span class="toc-index">01</span><span class="toc-label">R1 之后：组合本身也是一种能力</span></a></li><li><a class="toc-link" href="#fractal-problem"><span class="toc-index">02</span><span class="toc-label">第二个问题：固定观察下的“分形问题”</span></a></li><li><a class="toc-link" href="#three-probes"><span class="toc-index">03</span><span class="toc-label">2025：三个工作，和一团没有说清的疑惑</span></a></li><li><a class="toc-link" href="#moving-solution"><span class="toc-index">04</span><span class="toc-label">2026：从“静止”的问题走向“运动”的求解</span></a></li><li><a class="toc-link" href="#current-thesis"><span class="toc-index">05</span><span class="toc-label">结语：One Song Glory</span></a></li>
+      </ol>
+    </nav>
+        <div class="article-body">
+          
+    <section class="prose-section prose-section--chapter" id="r1-meta-ability" data-section-index="0">
+      <header class="section-header">
+        <p class="section-kicker">R1 · Policy source 开始变化</p>
+        <h2>R1 之后：组合本身也是一种能力</h2>
+      </header>
+      <p>后来我们才逐渐理解，能够用自然语言推理的智能，才是可以泛化的智能。仔细看，这句话里没有任何“视觉”限定词。我们当时没有注意到。如果早一点认真读一遍自己的目标，也许能提前一年半接近今天的感悟。</p>
+<p>更尴尬的是，<a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noreferrer">ReAct</a> 在 2022 年已经出现。它把语言推理与作用于外部环境的 action 交错起来，让 reasoning 更新行动计划，也让 action 从环境取得新的信息。我们没有关注到它。这不只是少读了一篇论文，也暴露了我们理解智能的视角太窄。还是要学一点语言学和心理学啊，朋友，理科生真的很局限。</p>
+<p>当时我们的注意力几乎全在模型越来越 general 的感知能力，以及哪些 perception-reasoning pattern 能把结果再提高一点。我们最显式的疏忽就在这里：默认 pattern 必须由人枚举、组合，再提供给模型；却没想过，寻找和学习这种组合，本身也是模型的一种能力，而且可能是更重要的能力。</p>
+<p>这就是我今天看 CoT、DPO 与 R1 的质的区别。可能还是因为我们太关注具体的任务，所以只在想一道题要怎么解，没有继续想“找到解法”本身需要什么 meta-ability。</p>
+<details class="evidence"><summary>技术边界：R1-Zero 与正式 R1 不能混写</summary><div class="evidence__body"><p>给我们最大冲击的，是 R1-Zero 在没有预先 SFT 的情况下通过大规模 RL 展示出的 reasoning behavior；正式 R1 则使用 cold-start data 和多阶段训练，并不是“完全没人示范”的单一路线。所以，正文里的“质的区别”指研究注意力从学习给定 pattern 转向模型怎样在反馈中探索解法，不表示 CoT、DPO 与 R1 的所有技术环节毫无连续性。</p></div></details>
+      
+    </section>
+    <section class="prose-section prose-section--chapter" id="fractal-problem" data-section-index="1">
+      <header class="section-header">
+        <p class="section-kicker">Problem 02 · Fixed observation</p>
+        <h2>第二个问题：固定观察下的“分形问题”</h2>
+      </header>
+      <p>和输出问题并存的，还有一个长期困扰我的疑云。我把它叫作 <strong>Vision 的分形问题</strong>。这是我的工作术语，不是学术界已有的统一定义。</p>
+<p>想象一张图片，里面有办公桌、被子、相册和显示器。我们可以训练一个模型识别桌面上的物品。但如果继续要求它识别相册里的内容，情况会变得很怪：相册里的照片也许还是一张桌面，桌面上又有一本相册。一个能泛化到各种真实桌面的检测器，未必能稳定识别“相册里面的相册”。</p>
+<p>这里面有感受野，有分界面，有 overfit，有输出结构化，也有算力和建模范式造成的各种 tradeoff。anyway，我把这些问题统称为“分形问题”。真实世界里的取舍太多了，不只限制模型，也让做 Vision 的人慢慢养成了一种畏难心理。2020 年时，这个问题真的让我很绝望。到了 2026 年，我第一次真正觉得：这件事也许是有办法的。</p>
+<details class="evidence"><summary>工作定义：三种“再看一眼”不能混为一谈</summary><div class="evidence__body"><p>为了让“分形问题”能够被讨论，我目前把它收窄为：在 observation 固定时，同一种视觉能力跨越尺度、媒介边界或嵌套上下文后，表现会变得不稳定。它不是一个单一故障机制，主动观察也不会自动消除所有原因；主动观察能改变的是证据条件。</p>
+<ul><li><strong>L0：重读已有表示。</strong> 模型只在已有 visual tokens 上重新分配 attention 或继续生成文字，没有改变视觉证据。</li><li><strong>L1：重处理固定像素。</strong> 模型 crop、zoom、rotate、增强或调用图像工具，再编码原图的不同区域。证据视图改变了，但没有新传感器输入。</li><li><strong>L2：取得新 observation。</strong> 系统改变位置、视角、尺度、时间或传感方式，从环境获得原来不存在于输入中的证据。</li></ul>
+<p>后文所说的 Agentic Computer Vision 至少需要明确自己处于哪一层。把更多 token 写成“我再看一次”，不等于真的再看。</p></div></details>
+      
+    <figure class="figure  figure--compact figure--fractal">
+      <div class="figure__media">
+        <img src="https://tosv.byted.org/obj/mmcdata/vlmvideo/visualizations/agentic-computer-vision-blog/preview/assets/fractal-desk-editorial.jpg" alt="办公桌上的相框里递归出现另一张办公桌和相框" width="1672" height="941" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="figure__caption">
+        <span class="figure-tag">原创概念插画</span>
+        <span>“相册里的相册”是作者对固定观察跨尺度、媒介边界与嵌套上下文失稳的工作术语，不是现成学术定义，也不暗示所有失败来自同一种机制。</span>
+        
+      </figcaption>
+    </figure>
+    </section>
+    <section class="prose-section prose-section--chapter" id="three-probes" data-section-index="2">
+      <header class="section-header">
+        <p class="section-kicker">2025 · Language interface 之后</p>
+        <h2>2025：三个工作，和一团没有说清的疑惑</h2>
+      </header>
+      <p>Valley2 之后，我们似乎又陷入了 bottleneck。2025 年初，我们延续了 Valley 在国内小规模模型（小于 10B）上的优势，开始更系统地梳理这个领域到底该做什么，也进入了 R1 带来的 VLM-RL 热潮。后来陆续形成了 GThinker、OCR hallucination 和 Perception-Time Scaling。</p>
+<p>当时的感觉其实很模糊。VLM 成功引入了自然语言输出，可它能解决的视觉问题，与文本模型能解决的问题之间仍然有天壤之别。GThinker、OCR hallucination 和 PTS 并不是我们提前画好的一条路线，只是那团疑惑慢慢长出来的三个工作。</p>
+      
+    </section>
+    <section class="prose-section prose-section--subsection prose-section--gthinker" id="gthinker" data-section-index="3">
+      <header class="section-header">
+        <p class="section-kicker">GThinker · 问题暴露</p>
+        <h3>GThinker：文本 rethink 为什么没有变成视觉行动</h3>
+      </header>
+      <p>在我们从 Valley Team “出逃”以前，GThinker 最早就来自我和 YuFei 的一次直觉讨论：文本 reasoning 和视觉 reasoning 中间总隔着一层东西。大量工作先把视觉内容变成文字，再在文字里继续操作，我一直觉得这一步太生硬。现在想来，这里缺的就是对视觉内容的反复观测。</p>
+<p>我们原本希望 visual rethink 能像 R1 的 Aha Moment 那样自然出现：做到一半意识到“不对不对”，于是回头检查证据。真实实验没有这么顺。我们做了大量 reward shaping，发现无论 SFT 还是 RL，都很难保证这种行为自发、合理地出现。</p>
+      
+    <figure class="figure figure--balanced figure--diagram figure--rethink">
+      <div class="rethink-diagram">
+        <section class="rethink-diagram__panel">
+          <span class="diagram-label">TEXT RETHINK</span>
+          <h3>信息和操作都在 context 里</h3>
+          <div class="rethink-diagram__tokens"><i></i><i></i><i></i><i></i><i></i></div>
+          <p>re-watch · re-edit · revise</p>
+        </section>
+        <section class="rethink-diagram__panel">
+          <span class="diagram-label">VISUAL RETHINK</span>
+          <h3>语言反思不会自动产生新视觉证据</h3>
+          <div class="rethink-diagram__action-row"><span>crop</span><span>zoom</span><span>code</span><span>new view</span></div>
+          <p>reasoning → action → perception</p>
+        </section>
+      </div>
+      <figcaption class="figure__caption"><span class="figure-tag">根据作者 2026 回看重绘</span><span>GThinker 的 cue-based rethink 仍在同一张图上重释 visual cues，没有通过 crop、zoom、code 或新视角取得新的 observation。</span></figcaption>
+    </figure>
+      <p>文本 rethink 本身就可以重读上下文、改中间状态；视觉 rethink 不能只把第一次看到的东西换个说法。与它对仗的应该是 manipulate + perception：crop、zoom、调工具，然后真的再看一次。做不到这一步，所谓 visual rethink 还是 text rethink。</p>
+<p>如果模型能采取的 action 只有 token，没有作用于视觉输入的动作，SFT 和 RL 最多教会它表演一种“我再看一眼”的语言 pattern。真实实验里，我们一直没能让 visual rethink 自发、合理地出现，即使我们的论文润色得让它看起来像是如此。</p>
+<p>论文后来当然被我们写得顺滑多了：Cue-Rethinking pattern，SFT cold start，再用 RL 鼓励探索，benchmark 也确实涨了。但真实过程没有那么漂亮。rethink 还是我们先设计好，再靠数据和显式提示触发。我们做的更像 imitation learning：抽象人类用各种工具完成 active perception 以后留下的结果，然后让模型直接模仿。工具使用、视觉操作和再次观察，却没有变成模型自己的行为。</p>
+<p>更讽刺的是，我自己常年用 OpenCV 看 case、crop、zoom、检查局部，却没有想过把这套真实工作方式直接变成模型的 action space。那时我们也完全想象不到，模型后来会在 code 上走得这么远。到了今天，与其模仿 rethink 的结果，不如让它真的写 code，作用于视觉内容，再把新的 perception 带回来。</p>
+<p>站在 2025 年 3 月前后，我们很难知道怎样解决这件事。即使 LLM 的 Agent 化当时也才刚刚起步，agentic visual RL 更不足以支撑这一套香香的实现。今天回味起来，GThinker 里埋着的其实就是我们对 Vision “分形问题”的终极忧虑：文本的推理到底怎么转化成视觉的主动，并且真正在 event-driven 的场景里提升视觉的“智能”。</p>
+<p>也正因为这样，今天再回味 Xie Saining 和 GPT 后来的一些工作，才觉得对这个问题的洞见和水平确实很高。</p>
+      
+    <figure class="figure figure--wide figure--diagram figure--visual-lineage">
+      <div class="visual-lineage" aria-label="GThinker、V* 与 Thinking with Images 对视觉 rethink 边界的三种处理">
+        <section class="visual-lineage__card visual-lineage__card--reinterpret">
+          <header><span>01</span><strong>GThinker</strong><small>reinterpret</small></header>
+          <div class="visual-lineage__stage">
+            <div class="visual-lineage__frame"><i></i><b>same image</b></div>
+            <div class="visual-lineage__loop"><span>cue</span><b>↻</b><span>rethink</span></div>
+          </div>
+          <p>重新解释已有 visual cues</p>
+          <em>no new observation</em>
+          <a href="https://arxiv.org/abs/2506.01078" target="_blank" rel="noreferrer">Cue-Rethinking pattern</a>
+        </section>
+        <section class="visual-lineage__card visual-lineage__card--search">
+          <header><span>02</span><strong>V*</strong><small>search + crop</small></header>
+          <div class="visual-lineage__stage">
+            <div class="visual-lineage__grid"><i></i><i></i><i></i><i></i><i></i><i></i><b></b></div>
+            <div class="visual-lineage__arrow">→</div>
+            <div class="visual-lineage__crop"><b></b><span>VWM</span></div>
+          </div>
+          <p>先提出目标，再定位并裁出局部</p>
+          <em>new region enters context</em>
+          <a href="https://arxiv.org/abs/2312.14135" target="_blank" rel="noreferrer">V* · Figure 3</a>
+        </section>
+        <section class="visual-lineage__card visual-lineage__card--tools">
+          <header><span>03</span><strong>Thinking with Images</strong><small>manipulate</small></header>
+          <div class="visual-lineage__stage">
+            <div class="visual-lineage__tilted"><b>input</b></div>
+            <div class="visual-lineage__tools"><span>crop</span><span>rotate</span><span>zoom</span></div>
+            <div class="visual-lineage__upright"><b>re-perceive</b></div>
+          </div>
+          <p>工具改变视觉内容，再把结果送回推理</p>
+          <em>new view, then reasoning</em>
+          <a href="https://openai.com/index/thinking-with-images/" target="_blank" rel="noreferrer">OpenAI official example</a>
+        </section>
+      </div>
+      <figcaption class="figure__caption">
+        <span class="figure-tag">依据公开机制重绘</span>
+        <span>三项工作并置用于比较视觉信息怎样重新进入推理环路，不表示它们属于同一技术路线或依次继承。</span>
+      </figcaption>
+    </figure>
+      <details class="evidence"><summary>外部坐标：Xie Saining 与 GPT 的具体工作仍待我确认</summary><div class="evidence__body"><p>目前最接近我记忆的两个候选是 V<em> 与 OpenAI 的 Thinking with Images。V</em> 围绕缺失信息递归搜索和 crop；Thinking with Images 让模型在推理中 crop、zoom、rotate，再观察处理后的图像。前者的搜索机制主要由人设计，后者又晚于 GThinker 的早期探索，所以这里只把它们作为帮助回忆的外部坐标，不替我提前确指。</p></div></details>
+    </section>
+    <section class="prose-section prose-section--subsection prose-section--ocr" id="ocr-hallucination" data-section-index="4">
+      <header class="section-header">
+        <p class="section-kicker">Seeing is Believing? · 看见还是补全</p>
+        <h3>OCR hallucination：开放输出以后，证据从哪里来</h3>
+      </header>
+      <p><a href="https://arxiv.org/abs/2506.20168" target="_blank" rel="noreferrer">《Seeing is Believing?》</a> 是对第一个问题的又一次思考。VLM 使用自然语言回答开放问题，看起来已经跳出 customized output 下，视觉智能退化成分类、回归或有限序列的陷阱。可 OCR hallucination 给了一个很直接的反证：模型对自己的视觉输入，未必有明确的认知。</p>
+<p>输入模糊、遮挡或低对比时，模型仍然倾向于给出流畅、完整的文字。所谓自然语言的智能化输出，也可能只是把概率匹配扩展到了更大的空间。正确 token 既可能来自视觉证据，也可能来自熟悉词形和语言上下文；只看最终答案，根本分不出来。</p>
+<p>当然，人也会猜。问题不在于模型能不能猜，而是它能不能分清自己是在看，还是在补全。对多模态模型来说，“真正看到”比给出正确答案更难定义。</p>
+<p>很长一段时间，我把这件事放在后训练能力里，叫作“拒答”。现在想来，可能还是定位低了。拒答只处理“当前证据不够”；更高一层的能力，是承认不够以后改变观察，再回来验证。</p>
+<p>我用 “Hollywood 里有几个 L” 作为直观例子：问题完全不变，只把图中的 <code>HOLLYWOOD</code> 改成 <code>HOLLLYWOOD</code>。模型如果仍凭熟悉拼写回答两个 L，就没有跟随当前视觉证据。这个例子是我的原创示意，不是公开论文 case。</p>
+      
+    <figure class="figure figure--balanced figure--diagram figure--hollywood">
+      <div class="hollywood-evidence" role="img" aria-label="HOLLYWOOD 与 HOLLLYWOOD 只相差一个 L，用于测试模型是否跟随当前视觉证据">
+        <section class="hollywood-evidence__case">
+          <span class="diagram-label">FAMILIAR SPELLING</span>
+          <strong>HOLLYWOOD</strong>
+          <p>有几个 L？ <b>2</b></p>
+        </section>
+        <div class="hollywood-evidence__switch" aria-hidden="true">same question<br>one visual cue changes</div>
+        <section class="hollywood-evidence__case hollywood-evidence__case--counterfactual">
+          <span class="diagram-label">COUNTERFACTUAL CUE</span>
+          <strong>HOLLLYWOOD</strong>
+          <p>有几个 L？ <b>3</b></p>
+        </section>
+      </div>
+      <figcaption class="figure__caption">
+        <span class="figure-tag">原创示意图 · 非 VFaith-Bench case</span>
+        <span>问题不变，只改变一个决定答案的视觉线索。测试的不是模型是否熟悉单词，而是它是否让当前图像覆盖熟悉拼写。</span>
+        <a class="figure__source" href="https://arxiv.org/abs/2506.11571" target="_blank" rel="noreferrer">VFaith · counterfactual visual editing</a>
+      </figcaption>
+    </figure>
+      <p>VFaith 把这种压力测试做得更极端：保持问题不变，使用 GPT-Image-1 生成反事实编辑，只改变决定答案的视觉线索，再检查模型是否随当前图像改变判断。它直接用生成链路攻击视觉证据与推理之间的模糊边界，是我那一年最喜欢的工作，也是我记忆里唯一没有中稿的一项。</p>
+<details class="evidence"><summary>论文边界：识别不确定性，还不是定义“真正看到”</summary><div class="evidence__body"><p>《Seeing is Believing?》把问题收束在 degraded document OCR。KIE-HVQA 要求模型区分清晰、部分遮挡和无法识别的字符；reward 既奖励可见字符的识别，也要求模型对不可识别字符留空或明确表示不确定。它支持“模型需要认识视觉不确定性”，没有给“真正看到”下完整定义，也没有执行新的视觉 action。</p>
+<p>VFaith 于 2025 年 6 月公开。公开的 ICLR 2026 页面状态是 Withdrawn Submission，不应写成“被拒”；“那一年最喜欢、唯一没中稿”是我的个人回忆。Hollywood 对照也不是 VFaith-Bench 的公开 case。</p></div></details>
+    </section>
+    <section class="prose-section prose-section--subsection prose-section--pts" id="pts" data-section-index="5">
+      <div class="research-block research-block--pts">
+        <header class="section-header">
+          <p class="section-kicker">PTS · Perception-time scaling</p>
+          <h3>PTS：把 reasoning 里的 inductive bias 搬到感知</h3>
+        </header>
+        <p><a href="https://arxiv.org/abs/2510.08964" target="_blank" rel="noreferrer">Perception-Time Scaling</a> 想再往前走一点。我们专门挑了可以度量的视觉估计任务，因为 perception 的误差可以算，reward 也可以给。目标不是让模型看完图以后再多写一段 CoT，而是把 reasoning 里那套展开、分解和验证的 inductive bias，真的压到 perception 上。</p>
+<p>但它还不是主动感知。输入没有变，模型也不会 crop、zoom 或拿到新的 observation；我们只是先把 perception 从一次输出，拆成了一个可以反复优化的过程。</p>
+<details class="evidence"><summary>论文机制与结果</summary><div class="evidence__body"><p>公开论文用 DisTANCE 测量长度、周长和面积等相对几何量。普通 inference-time scaling 虽然让回答变长，却几乎没有让 perception 更准。PTS 用 Perception Elaboration 把抽象距离表示成更丰富的 symbolic tokens，再用 Perception Decomposition 把复杂估计拆成中间子问题；SFT 教会初始 pattern，GRPO 根据最终数值误差优化整条 sequence。</p>
+<p>在论文报告中，Qwen2.5-VL-7B 在 DisTANCE 的平均严格指标 <code>RA_0.1</code> 上从 8.0% 提高到 64.7%。分析还观察到 perception-related tokens 增加，以及对 image tokens 的 attention 提升；后者是相关证据，不足以单独证明模型获得了某种新的感知机制。</p></div></details>
+        
+    <figure class="figure figure--diagram figure--pts">
+      <div class="pts-diagram">
+        <section class="pts-diagram__lane">
+          <span class="diagram-label">INFERENCE-TIME SCALING</span>
+          <div class="pts-diagram__step">short answer</div><b>→</b><div class="pts-diagram__step">longer reasoning</div><b>≠</b><div class="pts-diagram__step pts-diagram__step--warning">better perception</div>
+        </section>
+        <section class="pts-diagram__lane">
+          <span class="diagram-label">PERCEPTION-TIME SCALING</span>
+          <div class="pts-diagram__step">symbolize</div><b>→</b><div class="pts-diagram__step">decompose</div><b>→</b><div class="pts-diagram__step pts-diagram__step--success">verifiable reward</div>
+        </section>
+      </div>
+      <figcaption class="figure__caption"><span class="figure-tag">依据论文事实重绘</span><span>PTS 把 perception 展开成可分解、可优化的过程，但仍没有主动取得新的 observation。</span><a class="figure__source" href="https://arxiv.org/abs/2510.08964" target="_blank" rel="noreferrer">PTS paper</a></figcaption>
+    </figure>
+      </div>
+    </section>
+    <section class="prose-section prose-section--subsection" id="seed" data-section-index="6">
+      <header class="section-header">
+        <p class="section-kicker">Streaming video · 困难开始运动</p>
+        <h3>2025 年下半年：带着这些疑问去 Seed</h3>
+      </header>
+      <p>想来这些疑惑在 2025 年就已经深深困扰着我和身边的伙伴。大家当然可以继续刷更大、看起来更 general 的 perception model，可真正离“视觉智能”还有多远？我当时的感觉是，在 semantic output 的改造和 LLM 的引入都完成以后，这段距离好像就没有再缩短过。</p>
+<p>（这句话很能暴露笔者的“大 Vision 主义”。站在 2026 年看，在追求 AGI / ASI 的很长一段路上，Vision 可能都只会是 LLM 的挂件。可长期以来，做 Vision 的人总希望它能自成一派，独立 drive 出所谓的智能。）</p>
+<p>所以 2025 年下半年，我们一直在寻找出路。迷迷糊糊之中，带着上面这些疑问，我们去了 Seed 的视频通话团队，继续做一些探索和实践。</p>
+<p>当时我们也模模糊糊觉得，Video Understanding 对应的就是 LLM 的 long context。既然摩尔定律还在，那就应该去做一些需要更大算力、也更困难的问题。</p>
+<p>在这里接近一年，我确实觉得事情和预期很一致。这里有足够多的数据，也有还算顶尖的模型。我们之前对问题的理解和疑惑，到了流式视频和长期 Vision 里，都变成了真实的困难。而 2026 年 Agent 的大爆发，终于让我们看到了一条可能的出路。</p>
+      
+    </section>
+    <section class="prose-section prose-section--chapter" id="moving-solution" data-section-index="7">
+      <header class="section-header">
+        <p class="section-kicker">2026 · 改变怎么看</p>
+        <h2>2026：从“静止”的问题走向“运动”的求解</h2>
+      </header>
+      <p>到了 2026 年，Agent 大爆发。我最大的启发是：问题的边界终于也可以动了。工具只是表面，真正重要的是，模型能不能在解题的过程里改变自己拿到的 observation。</p>
+<p>传统 Vision 问题里，输入是“静止”的。这个静止不是说图片不动，也不是 image 和 video 的区别；而是在构造和解决问题的时候，传感器要采什么、从哪里采、以什么粒度交给模型，都已经被人预定义了。问题是静态的，解答又是形式化的，这当然给了我们很多解题的捷径。</p>
+<p>这也是事情发展的必然：大家总要先解决“静止”的问题，再解决“运动”的问题。但一旦把观察本身也放进求解过程，前面说的“分形问题”也许就不再是同一个问题了。</p>
+<p>人的眼睛传感范围也有限，但看不清相册里的东西，我们会靠近一点、转个头、换个角度，再把问题拉回自己能处理的尺度。所谓“运动”地看问题，对我来说就是这件事。</p>
+<p>所以我现在理解的视觉 Agent 化很直接：看不清，就自己决定下一眼看哪里、怎么拿证据；新证据和刚才的判断不一致，就回来推翻它。什么时候看够了，也应该由系统自己判断。一证永证的静态视觉方案也许不存在；这样“运动”地解决问题，确实可以把视觉系统的边界往外推很多。</p>
+<details class="evidence"><summary>历史坐标：“主动地看”当然不是 2026 年才出现</summary><div class="evidence__body"><p>Active Vision、机器人感知和视觉伺服早就存在。这里反省的是我自己所经历的那条主流工业 Vision 工作线：我们太习惯把“怎么看”写进题目，而不是交给模型。</p></div></details>
+<details class="evidence"><summary>我现在怎么判断它有没有真的“再看一眼”</summary><div class="evidence__body"><ol><li>action 实际改变视野、尺度、时间、位置、传感方式或工具处理结果，而不只是多生成一段文字；</li><li>系统保存视觉状态，知道新 observation 与旧证据的关系；</li><li>下一步由不确定性或信息需求驱动，而不是固定 crop 列表；</li><li>新证据能够更新甚至推翻结论，并触发停止；</li><li>实验需要与同等计算预算的静态 multi-crop 或固定工具链比较。</li></ol>
+<p>这是我在 2026 年的一个工作假设。它还不是一个完成的定义，后面得用真正的系统和 bad case 去碰。</p></div></details>
+      
+    <figure class="figure figure--balanced figure--diagram figure--spectrum">
+      <div class="observation-spectrum">
+        <section class="observation-spectrum__stage">
+          <span>01 · FIXED IMAGE</span>
+          <h3>反复索引已有证据</h3>
+          <div class="observation-spectrum__timeline"><i></i><i></i><i></i></div>
+          <p>scan · trace · compare</p>
+        </section>
+        <section class="observation-spectrum__stage">
+          <span>02 · ADAPTIVE VIEW</span>
+          <h3>决定下一步看哪里</h3>
+          <div class="observation-spectrum__timeline"><i></i><i></i><i></i><i></i></div>
+          <p>crop · zoom · search</p>
+        </section>
+        <section class="observation-spectrum__stage">
+          <span>03 · STREAMING WORLD</span>
+          <h3>决定何时看、记住什么</h3>
+          <div class="observation-spectrum__timeline"><i></i><i class="is-event"></i><i></i><i class="is-event"></i></div>
+          <p>observe · remember · route · act</p>
+        </section>
+      </div>
+      <figcaption class="figure__caption"><span class="figure-tag">编辑研究地图</span><span>根据当前稿件整理 fixed image、adaptive view 与 streaming world 三类 observation boundary，用于阅读导航。</span></figcaption>
+    </figure>
+    </section>
+    <section class="prose-section prose-section--subsection" id="active-observers" data-section-index="8">
+      <header class="section-header">
+        <p class="section-kicker">Active Observers × Watch–Remember–Reason</p>
+        <h3>2026 年：两张很近的外部坐标</h3>
+      </header>
+      <p>2026 年 7 月，我读到 <a href="https://arxiv.org/abs/2607.16165" target="_blank" rel="noreferrer">《An Exam for Active Observers》</a>。读完的第一反应是：这基本就是我想说的那件事。</p>
+<p>它专门做了一批必须反复看图才能答的题：扫完整张图，沿着结构追踪，再在相距很远的区域之间比较细节。我最有共鸣的是，图像不能先被压成一段语言 summary，然后就扔掉。reasoning loop 得能回来继续看。</p>
+<p>论文也把“更多 reasoning 不等于更多 perception”测了出来。在 85 道题上，最好的纯 CoT 模型为 10.6%，三名人类参与者平均为 96.1%。coding agent 使用图像处理工具后最好达到 50.6%，但工具看错时，模型又常常无法回到原图发现错误。</p>
+<p>我会把它和 GThinker、PTS 放在一起看。GThinker 缺的正是真正的视觉 action，PTS 把 perception 展开了，但输入还没有动；OCR hallucination 则一直在追问，当前答案到底有没有视觉证据。它们当然不是同一件事，只是都在逼近那个缺口。</p>
+<p>不过 ActiveVision 也还停在固定图片上。coding agent 可以 crop、处理像素，属于我前面说的 L1；它还没有主动拿到新的传感器 observation。所以对我来说，它更像一个很近的外部坐标：反复回到视觉证据已经是必要的一步，下一步仍然是让系统自己决定怎么再看。</p>
+<p>前一个月还有一篇更像地图的 survey：<a href="https://arxiv.org/abs/2606.07433" target="_blank" rel="noreferrer">《Watch, Remember, Reason: Human-View Video Understanding with MLLMs》</a>。它把 long video 和 streaming video 拆成 watch、remember、reason。听起来像三句大白话，放到长期视频里却正好把问题摆开了：模型不只要识别内容，还要决定看什么、留下什么，以及怎样回到散落在不同时刻的证据。</p>
+<p>这两篇我会放在一起看。《An Exam for Active Observers》在固定图像上说明，想得更久不能代替重新看；《Watch, Remember, Reason》把同一团问题推到长期和流式视频里，开始讨论带 evidence pointer 的结构化记忆、uncertainty-aware inspection，以及 event-driven 的状态更新。前者是 benchmark，后者主要是 survey 和 research map。它们都没有证明 Agentic Computer Vision 已经被解决，但至少让我意识到：这些年绕来绕去的疑云，已经不只是在我们几个人脑子里打转。</p>
+<details class="evidence"><summary>两篇论文分别证明了什么，又没有证明什么</summary><div class="evidence__body"><p>论文的核心 benchmark 每道题只有一张固定图片。普通模型只在已有 visual tokens 上推理，coding agent 可以 crop 或处理固定像素，属于 L1；它没有主动采集新的传感器输入。论文也把专门的 agentic visual problem-solving benchmark 留给 future work。</p>
+<p>论文于 2026 年 7 月 17 日首次公开，不用它重写我在 2025 年做 GThinker、OCR 或 PTS 时的原始动机。</p>
+<p>《Watch, Remember, Reason》于 2026 年 6 月 5 日首次公开。它把 video MLLM 写成 watching、memory state、reasoning trace 和 final output 四部分，并把 structured memory、evidence-grounded reasoning 与 streaming understanding 列为重要方向。它是一篇综述，不是一个系统的完成报告；文中提出的 uncertainty-aware inspection、event-triggered writing 和主动检索，也不能直接当成已经验证的解法。</p></div></details>
+      
+    <figure class="figure  figure--contained figure--active-observers">
+      <div class="figure__media">
+        <img src="https://tosv.byted.org/obj/mmcdata/vlmvideo/visualizations/agentic-computer-vision-blog/preview/assets/active-observers-task-families-crop.jpg" alt="ActiveVision 的 distributed scanning、sequential traversal 与 visual attribute transfer 三类任务" width="1652" height="690" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="figure__caption">
+        <span class="figure-tag">公开研究图 · cropped</span>
+        <span>这三类任务要求模型反复回到固定图像扫描、追踪或比较。它测量了必要的中间能力，但没有让系统取得新的传感 observation。</span>
+        <a class="figure__source" href="https://arxiv.org/abs/2607.16165" target="_blank" rel="noreferrer">An Exam for Active Observers · CC BY 4.0</a>
+      </figcaption>
+    </figure>
+    </section>
+    <section class="prose-section prose-section--chapter" id="current-thesis" data-section-index="9">
+      <header class="section-header">
+        <p class="section-kicker">Finally · One honest song</p>
+        <h2>结语：One Song Glory</h2>
+      </header>
+      <p>写到这里，我愿意把过去十年反复撞上的问题压成两条经常被混在一起的轴：output interface 和 observation policy。早年的 inductive bias，大多是在观察方式和输出结构都已经固定以后，为输入、结构、数据与计算找到最合适的先验；VLM 和自然语言真正放松的是输出接口，它让模型能回答开放问题，却没有自动改变模型怎样取得视觉证据；我今天所理解的 Agentic Computer Vision，则开始触碰另一条轴：让系统在求解过程中决定还要看什么、怎样再看一次，并把新的 observation 带回推理和校验（这也是比较落后的观点了哈哈哈哈哈，时代进步的真快）。</p>
+<p>这还不是答案。我没有证据说“分形问题”已经被解决，也不再坚持 Vision 必须脱离 LLM、独立长出一种智能。至少在相当长的时间里，Vision 可能仍然是 LLM 的一个挂件。但挂件也可以改变整个系统与现实世界的连接方式。一个 one-pass、一次前向、一证永证的视觉方案也许不存在；一个知道自己没有看清，能够调用工具、改变观察、保留状态并反复验证的系统，却可能把我们能解决的问题向外推很远。到了 2026 年，我第一次真正对这件事有信心。</p>
+<p>回头看，我并不是一路都想得很清楚，一路跌跌撞撞也没有做出什么名堂。这篇文章不应该把这些错过重新编成一条必然正确的路线。如果还有一点一致性，大概只是那个疑问一直没有消失：模型到底看见了什么，答案为什么成立；如果证据还不够，下一步应该怎么办？小伙伴们一直相信，视觉是智能走向现实世界的重要节点，而现在还做的太差 ！</p>
+<p>我一直很喜欢 Jonathan Larson 在《Rent》里的 <a href="https://www.mtishows.com/rent" target="_blank" rel="noreferrer">《One Song Glory》</a>：<a href="https://www.musicnotes.com/sheetmusic/rent/one-song-glory/MN0183438" target="_blank" rel="noreferrer">“One song, glory, one song before I go.”</a> 这篇文章大概就是我此刻想开始写的 one song。如果它有一点 glory，只是因为我终于愿意把一个困扰自己十年的问题讲清楚，并把之后的工作押在它上面。</p>
+<p>这一次，我想把它写完。然后继续去看。</p>
+      
+    <figure class="figure figure--balanced figure--diagram figure--agent-loop">
+      <div class="agent-loop" id="agentic-loop" role="img" aria-label="Observe、Reason、Act、Re-observe、Verify 与 State Memory 构成闭环">
+        <div class="agent-loop__node" data-step="1"><span>01</span><strong>Observe</strong><small>取得当前证据</small></div>
+        <div class="agent-loop__arrow" aria-hidden="true">→</div>
+        <div class="agent-loop__node" data-step="2"><span>02</span><strong>Reason</strong><small>判断还缺什么</small></div>
+        <div class="agent-loop__arrow" aria-hidden="true">→</div>
+        <div class="agent-loop__node" data-step="3"><span>03</span><strong>Act</strong><small>改变观察条件</small></div>
+        <div class="agent-loop__arrow" aria-hidden="true">→</div>
+        <div class="agent-loop__node" data-step="4"><span>04</span><strong>Re-observe</strong><small>带回新的证据</small></div>
+        <div class="agent-loop__arrow" aria-hidden="true">→</div>
+        <div class="agent-loop__node" data-step="5"><span>05</span><strong>Verify</strong><small>继续还是停止</small></div>
+        <div class="agent-loop__state"><strong>State / Memory</strong><span>evidence · hypothesis · action history · uncertainty</span></div>
+      </div>
+      <figcaption class="figure__caption"><span class="figure-tag">作者 2026 工作假设</span><span>一证永证的静态方案也许不存在；视觉 Agent 化让系统在求解过程中决定怎样继续观察，并用新证据更新结论。</span></figcaption>
+    </figure>
+    </section>
+          
+    <section class="notes" id="notes">
+      <p class="section-kicker">Notes &amp; sources</p>
+      <h2>公开材料只校对它能够证明的部分</h2>
+      <ol class="notes-list">
+        
+              <li>
+                <a href="https://www.nature.com/articles/s41586-025-09422-z" target="_blank" rel="noreferrer">DeepSeek-R1</a>
+                <span>用于公开方法与训练曲线；CoT/DPO 与 R1 的质变是作者的经历性判断。</span>
+              </li>
+              <li>
+                <a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noreferrer">ReAct</a>
+                <span>2022 年 reasoning 与 action 交错的外部坐标。</span>
+              </li>
+              <li>
+                <a href="https://arxiv.org/abs/2506.01078" target="_blank" rel="noreferrer">GThinker</a>
+                <span>公开 Cue-Rethinking、SFT 与 RL；真实失败过程和思想来源由作者口述。</span>
+              </li>
+              <li>
+                <a href="https://arxiv.org/abs/2506.20168" target="_blank" rel="noreferrer">Seeing is Believing?</a>
+                <span>论文范围是 degraded document OCR，不等于全部 VLM。</span>
+              </li>
+              <li>
+                <a href="https://arxiv.org/abs/2506.11571" target="_blank" rel="noreferrer">VFaith</a>
+                <span>用 cue-driven 反事实图像编辑测试模型是否跟随当前视觉证据；Hollywood 对照是本文原创示意，不是公开 benchmark case。</span>
+              </li>
+              <li>
+                <a href="https://arxiv.org/abs/2510.08964" target="_blank" rel="noreferrer">Perception-Time Scaling</a>
+                <span>固定输入上的 perception elaboration 与 decomposition，不是主动重采集。</span>
+              </li>
+              <li>
+                <a href="https://arxiv.org/abs/2607.16165" target="_blank" rel="noreferrer">An Exam for Active Observers</a>
+                <span>fixed-image repeated observation 的外部坐标；论文为 CC BY 4.0。</span>
+              </li>
+              <li>
+                <a href="https://arxiv.org/abs/2606.07433" target="_blank" rel="noreferrer">Watch, Remember, Reason</a>
+                <span>long / streaming video 的功能地图；是 survey，不是完成证明。</span>
+              </li>
+              <li>
+                <a href="https://arxiv.org/abs/2602.15329" target="_blank" rel="noreferrer">EventMemAgent</a>
+                <span>online video、event memory 与多粒度 perception tools 的 2026 例子。</span>
+              </li>
+              <li>
+                <a href="https://arxiv.org/abs/2601.15655" target="_blank" rel="noreferrer">Event-VStream</a>
+                <span>event-driven long video 与 persistent memory 的 2026 例子。</span>
+              </li>
+      </ol>
+      <p class="notes-disclaimer">论文署名、专利署名和 GitHub 提交不用于推断作者的角色、投入程度或职业主线。个人经历、内部时间与当时的心理状态仍以作者口述和后续可公开材料为准。</p>
+    </section>
+          <nav class="part-navigation" aria-label="上下篇导航">
+      <a class="part-navigation__link part-navigation__link--previous" href="index.html">
+        <span>返回上篇</span>
+        <strong>先把世界压进一个输出</strong>
+      </a></nav>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>From inductive bias to semantic, finally Agentic computer vision</p>
+    <a href="#main-content">回到正文开头 ↑</a>
+  </footer>
+</body>
+</html>

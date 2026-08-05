@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f0e6">
+  <meta name="description" content="从 CNN、大规模自监督视觉（Scaled SSL）、EasyPhoto、Valley2，到 Streaming Video Agent，我逐渐意识到：真正的工作突破，既在 encoder，更在 output。">
+  <title>先把世界压进一个输出：一个普通视觉工程师的十年工作回看</title>
+  <link rel="stylesheet" href="styles.css?v=4c42d27b765a">
+  <script src="script.js?v=72d3760acf1b" defer></script>
+</head>
+<body data-part="1">
+  <a class="skip-link" href="#main-content">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span class="reading-progress__bar"></span></div>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-brand" href="index.html">
+        <span>ACV</span>
+        <strong>From inductive bias to semantic, finally Agentic computer vision</strong>
+      </a>
+      <nav class="part-switcher" aria-label="文章上下篇">
+        <a href="index.html" aria-current="page">Part I</a>
+        <a href="part-2.html" >Part II</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <article>
+      <header class="hero">
+        <p class="hero__eyebrow">Part I · 2015–2025</p>
+        <h1>先把世界压进一个输出</h1>
+        <p class="hero__subtitle">一个普通视觉工程师的十年工作回看</p>
+        <p class="hero__description">从 CNN、大规模自监督视觉（Scaled SSL）、EasyPhoto、Valley2，到 Streaming Video Agent，我逐渐意识到：真正的工作突破，既在 encoder，更在 output。</p>
+        <div class="hero__meta">
+          <span>持续整理中的工作笔记</span>
+          <span>约 20 分钟阅读</span>
+          <time datetime="2026-08-03">2026-08-03</time>
+        </div>
+        <p class="hero__opening">这篇文章写下我过去十年做过的一些工作，也写下那些当时没有想明白、后来又不断出现的问题。很多概念是今天回看时才有的，不能倒写成当年的动机。</p>
+      </header>
+
+      <aside class="work-in-progress work-in-progress--term">
+        <strong>术语便签</strong>
+        <span><i>Inductive bias</i> 指学习器超出有限样本进行泛化时所依赖的假设或偏好。<a href="https://www.cs.cmu.edu/~tom/pubs/NeedForBias_1980.pdf" target="_blank" rel="noreferrer">Mitchell 1980</a> 是机器学习中的经典早期定义，但这不表示我在 2016 年已经用这个词理解自己的工作。VLM 阶段暂称 <i>Language interface</i>：Semantic 太宽，Caption 又不足以覆盖问答、instruction following 和 reasoning。</span>
+      </aside>
+
+      
+
+      <details class="mobile-toc">
+        <summary>本篇目录 · 6 章</summary>
+        
+    <nav class="mobile-toc__nav" aria-label="本篇目录">
+      <p class="toc-title">目录</p>
+      <ol>
+        <li><a class="toc-link" href="#gesture-2016-2018"><span class="toc-index">01</span><span class="toc-label">2015 至 2018：从转码到一场反潮流的胜利</span></a></li><li><a class="toc-link" href="#vision-was-clear"><span class="toc-index">02</span><span class="toc-label">当时的 Vision 为什么清晰：答案几乎都写好了</span></a></li><li><a class="toc-link" href="#encoder-and-scale"><span class="toc-index">03</span><span class="toc-label">2020 至 2022：统一 encoder，与规模的甜点时刻</span></a></li><li><a class="toc-link" href="#lost"><span class="toc-index">04</span><span class="toc-label">2022 至 2023：Lost，和几次没有看懂的转向</span></a></li><li><a class="toc-link" href="#valley2"><span class="toc-index">05</span><span class="toc-label">VLM 时代：Valley2 自然语言打开输出</span></a></li><li><a class="toc-link" href="#o1-composition"><span class="toc-index">06</span><span class="toc-label">o1 时刻：从定制任务走向能力组合</span></a></li>
+      </ol>
+    </nav>
+      </details>
+
+      <div class="article-shell">
+        
+    <nav class="desktop-toc" aria-label="本篇目录">
+      <p class="toc-title">目录</p>
+      <ol>
+        <li><a class="toc-link" href="#gesture-2016-2018"><span class="toc-index">01</span><span class="toc-label">2015 至 2018：从转码到一场反潮流的胜利</span></a></li><li><a class="toc-link" href="#vision-was-clear"><span class="toc-index">02</span><span class="toc-label">当时的 Vision 为什么清晰：答案几乎都写好了</span></a></li><li><a class="toc-link" href="#encoder-and-scale"><span class="toc-index">03</span><span class="toc-label">2020 至 2022：统一 encoder，与规模的甜点时刻</span></a></li><li><a class="toc-link" href="#lost"><span class="toc-index">04</span><span class="toc-label">2022 至 2023：Lost，和几次没有看懂的转向</span></a></li><li><a class="toc-link" href="#valley2"><span class="toc-index">05</span><span class="toc-label">VLM 时代：Valley2 自然语言打开输出</span></a></li><li><a class="toc-link" href="#o1-composition"><span class="toc-index">06</span><span class="toc-label">o1 时刻：从定制任务走向能力组合</span></a></li>
+      </ol>
+    </nav>
+        <div class="article-body">
+          
+    <section class="prose-section prose-section--chapter prose-section--gesture prose-section--gesture-refined" id="gesture-2016-2018" data-section-index="0">
+      <header class="section-header">
+        <p class="section-kicker">2015–2018 · Inductive bias 是工程判断</p>
+        <h2>2015 至 2018：从转码到一场反潮流的胜利</h2>
+      </header>
+      <p>回顾大学时光，对我人生影响最大的，可能是浙江大学电子信息工程专业的一次暑期企业参观。（不知道现在学校还有没有这个环节，但我的建议是取消掉。）那次参观回来，我就坚定了转码的决心。即使当时已经选择了某位“名”满天下的电信泰斗做导师，也进组做了一些项目，我还是决定换一条路。</p>
+<p>除了这位老师过于“有名”，师兄又极力劝退我，还有一个原因：电路系统里的很多研究，已经到了实验误差、noise 和真正的研究进展很难区分的程度。这对喜欢确定性工作的我来说很痛苦。（视觉世界后来的发展，使得这句话回看起来格外讽刺。）</p>
+<p>一番调研后，我想找蔡登老师做机器学习，于是联系了他。他很支持，给了我一些论文自学，我也去上了他的课。十年过去，其他细节都已经模糊，课堂上讲的 AdaBoost 却一直没有忘。</p>
+<p>到了大四保研时，我阴差阳错进了一个做嵌入式视觉的团队。果然，人生重大的变化往往无法准备周全。于是我很早就开始折腾 NVIDIA 开发板，用 CUDA 和 C++ 写视觉算法。那时 CNN 大热，我也自学了不少课程。比起电路板世界里的误差和波动，当时计算机视觉——还是手工特征的年代——显得确定得让人羡慕。后来证明，这个领域的“炼丹”程度比电路世界夸张得多。</p>
+<p>大四和研一，我一直在做实验室的嵌入式视觉项目。其间参加过一次手势识别比赛。我选了一圈，最后用了 Viola-Jones。实在是因为这个任务 <em>too damn easy, Haar feature is enough</em>。</p>
+<p>ARM 当时似乎想推自己的 Mali GPU 配套，但在我使用的驱动和开发栈里，实际用下来确实很烂，导致 CNN 方案很难在那块板子上发挥性能。反过来，RK3399 有四个 Cortex-A53 小核和两个 Cortex-A72 大核，自己写 C++ / OpenCV 的 Viola-Jones 很好调度。那套实现默认吃满六个 CPU 核，在我的测试里反而最好用。</p>
+<p>那时我对嵌入式视觉项目的开发已经得心应手。我喊了很多人采集数据，还提前一天去赛场测试环境光照，做最后的适配。据我对现场的回忆，当天我就觉得自己稳赢了：其他人的 YOLO 只能跑到 1 至 5 FPS，我的纯推理吞吐接近 100 FPS，快到采集、拷贝和显示成了瓶颈；完整的 480p 摄像链路实际只能跑到约 25 FPS。</p>
+      
+    <figure class="figure figure--archive">
+      <div class="gesture-archive">
+        <div class="gesture-archive__live">
+          <img src="https://tosv.byted.org/obj/mmcdata/vlmvideo/visualizations/agentic-computer-vision-blog/preview/assets/gesture-face-and-hand-public.png" alt="2017 年手势识别系统画面，左侧是面部已打码、带检测框的摄像头输入，右侧是肤色分割 mask" width="1295" height="505" loading="lazy" decoding="async">
+        </div>
+        <div class="gesture-archive__report">
+          <div class="gesture-archive__copy">
+            <span class="diagram-label">2017 · PERFORMANCE REPORT</span>
+            <strong>inference 足够快以后，瓶颈就移到了系统的其他环节</strong>
+            <p>ISP + capture → memcpy → inference → cv::imshow</p>
+          </div>
+          <div class="gesture-archive__pipeline">
+            <img src="https://tosv.byted.org/obj/mmcdata/vlmvideo/visualizations/agentic-computer-vision-blog/preview/assets/gesture-isp-pipeline.png" alt="性能报告把 ISP、摄像头采集、DMA、内存拷贝、inference 与显示串成一条流水线" width="979" height="293" loading="lazy" decoding="async">
+          </div>
+        </div>
+      </div>
+      <figcaption class="figure__caption">
+        <span class="figure-tag">作者旧项目 · 2017 · 公开版</span>
+        <span>仓库留存的实时检测画面与性能报告流程图。实时画面已做面部匿名化，同时保留识别框、肤色 mask 和内部 FPS 计数；流程图解释了为什么“算法端接近 100 FPS”不等于完整摄像链路的 100 FPS。</span>
+        <a class="figure__source" href="https://github.com/wuziheng/GestureDetect-Violajones-CNN-/tree/0f0562cd0bbda32d32cfd46915c734d9757205b3" target="_blank" rel="noreferrer">GestureDetect archive</a>
+      </figcaption>
+    </figure>
+      <p>最后不出意外，我们在所有赛道都爆杀了其他人。讲道理，应该给我发三份一等奖，但主办方还是把其他赛道的几万块奖金发给了别人。毕竟重在参与。</p>
+<p>这段经历对我后来怎么理解 Vision 很重要。毕竟我的世界是从 pixel 搭起来的，第一个算法就是手写 ISP，用 CUDA 去噪。视觉算法很抽象，infra 却具体得过分：每一个字节怎样在内存里组合，怎样 gate，怎样 reshape，都得先在我脑子里过一遍。这个东西给人一种安全感。</p>
+<p>所以今天我会用 <strong>inductive bias</strong> 来概括这种判断。这个词是后来补上的；当时的我想得没有这么理论。output 要什么，硬件能跑什么，我应该把什么结构塞进系统——大概就是这些。</p>
+<details class="evidence"><summary>资料核对：inductive bias 与比赛公开记录</summary><div class="evidence__body"><p>Mitchell 在 1980 年的《The Need for Biases in Learning Generalizations》中给出了机器学习领域常引用的早期定义。本文不声称他首次创造了这个词，也不把我记得 AdaBoost 与后来自称“统计学派”写成因果关系。</p>
+<p>这里的 inductive bias 指学习系统在有限数据之外，已经通过结构、假设或搜索空间带进去的偏好。对 CNN 来说，locality 和 weight sharing 是结构性先验；对这场比赛来说，任务、硬件和数据共同决定了我愿意把什么假设写进系统。它不是“用了旧算法”的同义词，也不是训练后学到的卷积核本身。</p>
+<p>公开仓库记录：系统运行在 Rockchip RK3399 和 Ubuntu 16.04 上，以 C++ 和 OpenCV 的 Viola-Jones cascade 完成五类手势的定位与分类，并保留 CaffeOnACL / CNN 接口。仓库所称比赛版本在距离 1 至 1.5 米、<code>frame_control=3</code>、<code>use_cnn=0</code> 时，单手势自测为 2.2 至 4.9 ms，多手势样例为 3.8 至 10.3 ms。这些记录能证明公开实现及仓库自测，不能单独证明比赛名次或其他选手的现场表现；后者是我的亲历回忆。</p></div></details>
+    </section>
+    <section class="prose-section prose-section--subsection prose-section--momenta" id="momenta" data-section-index="1">
+      <header class="section-header">
+        <p class="section-kicker">Momenta · 规模第一次改变</p>
+        <h3>研二，Momenta：第一次把规模当成方法</h3>
+      </header>
+      <p>不过，当时还在学校里瞎折腾的我肯定想不到，一两年后竟然能和那些已经名声大噪的大牛一起工作。</p>
+<p>研二时，我去 Momenta 打工，认识了 Jie Hu 和 Shaoqing Ren，也开始做更正统的 CNN 结构研究。在我心里，Shaoqing Ren 是 2015 到 2020 年间目标检测领域的绝对高山；Jie Hu 则是 Vision Transformer 到来以前，CNN 识别网络结构最后的余晖。我一直觉得，他们是那个黄金白银时代最璀璨的明珠。</p>
+      <details class="evidence evidence--visual" open><summary>时代背景：Faster R-CNN 与 SE-Net</summary>
+    <div class="paper-diptych paper-diptych--momenta" aria-label="Shaoqing Ren 与 Jie Hu 的代表作">
+      
+    <figure class="paper-card paper-card--faster">
+      <div class="paper-card__media">
+        <img src="https://tosv.byted.org/obj/mmcdata/vlmvideo/visualizations/agentic-computer-vision-blog/preview/assets/faster-rcnn-figure2-arxiv-v3.png" alt="Faster R-CNN 系统图：共享卷积特征连接 Region Proposal Network、proposals、RoI pooling 与分类器" width="1080" height="1276" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="paper-card__caption">
+        <span class="paper-card__year">2015</span>
+        <div>
+          <strong>Faster R-CNN</strong>
+          <small>Shaoqing Ren et al. · NIPS 2015</small>
+          <p>RPN 与检测器共享卷积特征，把候选区域生成也并入网络。摘图来自扩展技术报告 Figure 2；它说明这段时代背景，不证明我的个人贡献。</p>
+          <a href="https://arxiv.org/abs/1506.01497" target="_blank" rel="noreferrer">arXiv:1506.01497v3 · Fig. 2</a>
+          
+        </div>
+      </figcaption>
+    </figure>
+      
+    <figure class="paper-card paper-card--senet">
+      <div class="paper-card__media">
+        <img src="https://tosv.byted.org/obj/mmcdata/vlmvideo/visualizations/agentic-computer-vision-blog/preview/assets/senet-se-pipeline.jpg" alt="Squeeze-and-Excitation building block：从特征变换到 squeeze、excitation 和逐通道重标定" width="1900" height="394" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="paper-card__caption">
+        <span class="paper-card__year">2018</span>
+        <div>
+          <strong>Squeeze-and-Excitation Networks</strong>
+          <small>Jie Hu, Li Shen &amp; Gang Sun · CVPR 2018</small>
+          <p>先汇聚空间信息，再为每个 channel 学习权重，把全局上下文反馈给局部表征。原图来自作者 SENet 仓库。</p>
+          <a href="https://github.com/hujie-frank/SENet/tree/0262d43d44c561fd53c3dba210cc8bacfc60500d" target="_blank" rel="noreferrer">SENet official repository · Apache-2.0</a>
+          
+        </div>
+      </figcaption>
+    </figure>
+    </div></details>
+      <p>Jie Hu 对我特别好，也是非常 hands-on 的选手。我们花了很多时间用 Caffe 做 Scaling Face ID。基于表征学习的人脸识别真的很吃结构和数据，目标又足够清楚，做起来非常开心。国内丰富的数据，也使这里成为当时很适合做大规模人脸表征的地方。</p>
+<p>DP、TP 这些名字，其实是后来读刘铁岩老师的书才真正弄明白的。但在那之前，我已经在 Caffe 里写 kernel、写通信，按类别切 FC / Softmax，硬把超大类别的人脸分类跑起来了。看着 scale 真的换来性能，那种感觉非常激动。</p>
+<p>我当时几乎把 <code>scaling class</code> 看成表征学习唯一的方案。这大概是我心里最早的一条 scaling law，只是当时还没有这个名字。这个想法后来影响了我很长时间。</p>
+<p>那也是我第一次在工作中接触上百张卡的分布式训练，做超大规模人脸分类、表征学习和剪枝。规模突然变了，核心问题仍然清楚：怎样学到更好的表征，怎样让结构、计算与任务互相匹配。那时的一些算法改进，也确实带着数学上的美感。</p>
+<details class="evidence"><summary>论文与口述的边界：公开实验不是全部工作规模</summary><div class="evidence__body"><p>我的硕士论文记录了单卡、单机 8 卡和多机 32 卡实验，也记录了大规模人脸分类、度量学习与混合并行。上百卡和剪枝来自我的工作回忆，不能由论文单独证明；论文也没有使用 scaling law 这个说法。</p>
+<p>当时按类别切分 FC / Softmax 可以归到 model parallelism，与今天 tensor parallelism 的一部分思想相通，但不是 Transformer 里常说的同一套实现。</p>
+<p>正文里的“唯一方案”和“最早的 scaling law”是在记录我当时的判断，不表示它们是今天严格成立的技术结论，更不等于我已经发现了 foundation-model scaling。</p></div></details>
+    </section>
+    <section class="prose-section prose-section--chapter" id="vision-was-clear" data-section-index="2">
+      <header class="section-header">
+        <p class="section-kicker">Problem 01 · Output interface</p>
+        <h2>当时的 Vision 为什么清晰：答案几乎都写好了</h2>
+      </header>
+      <p>在 2021 年以前，我其实很少问 Computer Vision 的 long vision 是什么，因为眼前的事太清楚了。那时数据和算力都受限，业界真正能解决、又有产业价值的问题就那么多。识别大多就是分类或检索，检测大量围着特征、类别和坐标转，OCR 再复杂，也可以写成一段有限序列。output 一旦明确，后面该干什么几乎都顺着长出来了。</p>
+<p>我那时会很自然地把自己归到“统计学派”。拿到一个任务，我先看 output 要什么，硬件能给什么，然后才是输入、结构、数据和计算应该怎么配。先把问题定义到能做、能测、能交付，这套方法在当时就是很好用。</p>
+<p>说得直接一点，那时整个行业都像在拿着锤子找钉子。摄像头往城市、车和每个人的口袋里铺，算力也开始被塞进视觉数据流，low-hanging fruit 偏偏又真的到处都是。大家一拥而上，用结构化输出去填现实社会的需求。</p>
+<p>这套系统也给大部分人安排好了位置。有人做框架，有人做结构，有人做算法。表面分工不同，底层都在做同一件事：</p>
+<blockquote class="pullquote"><p>找到可以形式化输出的场合，把算力适配进数据流。</p></blockquote>
+<p>任务先给出固定的输出接口，系统再把输入稳定、高效地变成这个输出。真正的工作突破既可能发生在 encoder，也可能发生在 output；只是当时 output 往往早已由问题定义者写好，于是研究的注意力自然集中到前者。</p>
+<p>后来我才把这团疑云叫作第一个问题：<strong>输出的问题</strong>。结构化输出当然有价值，可它也会反过来决定整个领域能看见什么。现实一旦无法压成一个类别、一个向量、几个坐标或一段有限序列，原来的系统就很难接住。</p>
+      
+    <figure class="figure figure--diagram figure--balanced figure--output-grammar">
+      <div class="output-grammar" role="img" aria-label="固定视觉输入被压缩为类别、向量、检测框和有限序列">
+        <div class="output-grammar__input">
+          <span class="diagram-label">FIXED OBSERVATION</span>
+          <strong>现实世界的视觉输入</strong>
+          <span>camera · image · sensor</span>
+        </div>
+        <div class="output-grammar__arrow" aria-hidden="true">→</div>
+        <div class="output-grammar__slots">
+          <div class="output-grammar__slot"><span>01</span><strong>class</strong></div>
+          <div class="output-grammar__slot"><span>02</span><strong>vector</strong></div>
+          <div class="output-grammar__slot"><span>03</span><strong>box</strong></div>
+          <div class="output-grammar__slot"><span>04</span><strong>sequence</strong></div>
+        </div>
+      </div>
+      <figcaption class="figure__caption"><span class="figure-tag">原创示意图</span><span>早期 Vision 的问题边界，往往先由输出接口决定。复杂现实被压缩成少数可验收的形式。</span></figcaption>
+    </figure>
+    </section>
+    <section class="prose-section prose-section--chapter" id="encoder-and-scale" data-section-index="3">
+      <header class="section-header">
+        <p class="section-kicker">2020–2022 · 统一表征与工程规模</p>
+        <h2>2020 至 2022：统一 encoder，与规模的甜点时刻</h2>
+      </header>
+      
+      
+    </section>
+    <section class="prose-section prose-section--subsection prose-section--cv-dead-game" id="cv-dead-game" data-section-index="4">
+      <header class="section-header">
+        <p class="section-kicker">2020–2021 · Nothing interesting</p>
+        <h3>2020 至 2021：CV = dead game</h3>
+      </header>
+      <p>后来 Jie Hu 和 Shaoqing Ren 都离开了。我一个人流落到 Aliyun-PAI，作为阿里集团的中台支持不同业务的视觉算法。</p>
+<p>那几年，我和 Jie Hu 以及其他稍微资深一些的同行聊天，大家经常表达同一种厌倦。小一点的问题，随便搞几百张、上千张数据，找个 pretrained model，finetune 一把——本质上就是修一下 output shape——凑合凑合就够用了。nothing interesting。EasyCV 最早差不多也是把 metric learning、分类框架和 SSL pretrain 组合了一下，因为我发现这就足够集团大部分人用了，顺便再接一点简单好用的目标检测器。</p>
+<p>空气里有一种很强的情绪：<strong>CV = dead game</strong>。</p>
+      
+    <figure class="figure figure--balanced figure--encoder-triptych">
+      <div class="figure__media">
+        <img src="https://tosv.byted.org/obj/mmcdata/vlmvideo/visualizations/agentic-computer-vision-blog/preview/assets/cv-encoder-triptych.svg" alt="Viola-Jones 的 Haar features、SIFT 的方向直方图与 CNN loss landscape 概念图并列" width="1200" height="600" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="figure__caption">
+        <span class="figure-tag">依据经典论文机制重绘</span>
+        <span>从手工挑选 Haar features，到手工构造梯度描述子，再到用 BP 在数据上学习 encoder。右图只是 filter-normalized CNN loss slice 的概念示意，不是实验曲线，也不把它误称为严格的数学马鞍面。</span>
+        <a class="figure__source" href="https://www.merl.com/publications/TR2004-043" target="_blank" rel="noreferrer">Viola &amp; Jones 2001 · Fig. 3</a>
+        <span aria-hidden="true"> · </span>
+        <a class="figure__source" href="https://www.cs.ubc.ca/~lowe/papers/ijcv04.pdf" target="_blank" rel="noreferrer">Lowe 2004 · Fig. 7</a>
+        <span aria-hidden="true"> · </span>
+        <a class="figure__source" href="https://papers.nips.cc/paper/7875-visualizing-the-loss-landscape-of-neural-nets" target="_blank" rel="noreferrer">Li et al. 2018</a>
+      </figcaption>
+    </figure>
+      <p>我当时的抱怨其实很粗暴：把 AdaBoost、Viola-Jones、SIFT 和 CNN 放在同一条线上看，有什么区别呢？过去是针对特定问题手工 design encoder，后来是有了 BP，再结合 Vision 的 locality，从数据里优化出 conv kernel as encoder。encoder 的产生方式变了，最后做的还是分类、回归或检索。看不出任何智能。</p>
+<details class="evidence"><summary>后来再看：机制当然不是一回事</summary><div class="evidence__body"><p>上面记录的是我当时的不满足，不是说这些方法在表征机制上没有实质差异。BP 让系统能从数据中学习特征，CNN 又把 locality 与 weight sharing 写进结构，自动化程度已经发生了巨大变化。我真正不满足的是：当输出与评测方式不变时，我仍然看不出这种系统怎样走向自己理解的“智能”。</p></div></details>
+    </section>
+    <section class="prose-section prose-section--subsection prose-section--moco" id="moco" data-section-index="5">
+      <header class="section-header">
+        <p class="section-kicker">Encoder 统一了，问题没有</p>
+        <h3>2020 至 2021：MoCo、SwAV 与 unified encoder</h3>
+      </header>
+      <p>大约在 2020 至 2021 年，Kaiming He 的 MoCo 系列让大家在精神上稍微放松了一点。大家开始从 task-specific encoder 转向 SSL，寻找一种不依赖人工类别标签的 unified encoder。看起来 Kaiming 又一次引领了时代。</p>
+<p>MoCo 最让我兴奋的，不只是 queue 或 momentum encoder，而是它真的让大家开始相信：也许不用围着每一个 task 单独做 encoder 了。SwAV 又用 swapped assignment 往前走了一步。同一张图的不同视图要保持实例一致，或者落到一致的在线聚类原型；这些是不同的学习信号，不能和人脸身份标签简单说成同一种“class”。</p>
+      
+    <div class="paper-diptych ssl-prior-diptych" aria-label="MoCo 与 SwAV 的核心 prior 重绘">
+      
+    <figure class="paper-card paper-card--moco">
+      <div class="paper-card__media">
+        <img src="https://tosv.byted.org/obj/mmcdata/vlmvideo/visualizations/agentic-computer-vision-blog/preview/assets/moco-prior.svg" alt="MoCo 中同一图像的两种增强视图分别经过 query encoder 和 momentum encoder，队列提供大量负样本" width="960" height="620" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="paper-card__caption">
+        <span class="paper-card__year">2020</span>
+        <div>
+          <strong>MoCo</strong>
+          <small>He et al. · CVPR 2020</small>
+          <p>同一实例的不同增强视图应该相近。图意依据论文 Figure 1 重绘，突出 momentum encoder 与 queue，而不是把机制概括成大 batch 平滑。</p>
+          <a href="https://openaccess.thecvf.com/content_CVPR_2020/html/He_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper.html" target="_blank" rel="noreferrer">依据 MoCo Figure 1 重绘</a>
+          
+        </div>
+      </figcaption>
+    </figure>
+      
+    <figure class="paper-card paper-card--swav">
+      <div class="paper-card__media">
+        <img src="https://tosv.byted.org/obj/mmcdata/vlmvideo/visualizations/agentic-computer-vision-blog/preview/assets/swav-prior.svg" alt="SwAV 中同一图像的全局与局部视图通过共享编码器，并交换预测在线聚类原型" width="960" height="620" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="paper-card__caption">
+        <span class="paper-card__year">2020</span>
+        <div>
+          <strong>SwAV</strong>
+          <small>Caron et al. · NeurIPS 2020</small>
+          <p>同一图像的不同视图应该得到一致的原型分配。图意依据论文 Figure 1 重绘；multi-crop 扩展跨视图一致性，不假设局部 crop 含有整图全部信息。</p>
+          <a href="https://proceedings.neurips.cc/paper/2020/hash/70feb62b69f16e0238f741fab228fec2-Abstract.html" target="_blank" rel="noreferrer">依据 SwAV Figure 1 重绘</a>
+          
+        </div>
+      </figcaption>
+    </figure>
+    </div>
+      <p>相比早两年围绕 softmax、CircleLoss 做大规模 Face ID，这一步确实把表征学习的边界放宽了。放到阿里内部，它也真的能换来指标和迁移收益。</p>
+<p>可我当时，甚至后来很长时间，都觉得这条路挺失败。encoder 越来越 general，旧流程也越来越顺，可 output 和 reward 没有被重写，观察方式也仍由人规定。我想找的东西不在这里。</p>
+<details class="evidence"><summary>“失败”说的是哪一层</summary><div class="evidence__body"><p>这不是说 MoCo、SwAV 或后来的 DINO 系列没有价值。它们实实在在改造了训练目标，也支持图像级与像素级任务。这里的“失败”只针对我后来关心的问题：它们主要统一了表征，下游输出、评测协议和观察方式大多仍由人预先规定。</p></div></details>
+<p>这似乎一直是 CV 人最爱干的事情：做 general systemization。OpenMMLab 的一系列框架就是最典型的例子，task、model、training 和 deployment 都可以整整齐齐地装进去。可装进去的还是原来的问题。系统越来越 general，我的疑惑却没有变少。</p>
+<details class="evidence"><summary>工程侧记：上亿数据真正难在哪里</summary><div class="evidence__body"><p>我后来独立负责把 MoCo v2、SwAV、DINO 等自监督方案落到阿里内部多个团队。算法验证反而相对直接，真正反复折腾的是让上亿图片稳定进入多机训练：数据增强算子的效率，PyTorch DDP 在超大文件列表和多进程下的内存问题，亿级随机读取，以及跨机器 batch 的通信效率。</p>
+<p>这些细节不证明任何新的学习理论，却让我越来越确信算法与工程系统很难分开。无论嵌入式 Vision 还是后来的大规模训练，模型能力都要落到硬件、数据与计算系统里。</p></div></details>
+    </section>
+    <section class="prose-section prose-section--subsection" id="pai-scale" data-section-index="6">
+      <header class="section-header">
+        <p class="section-kicker">PAI · 算法与 Infra</p>
+        <h3>2020 至 2022，PAI：scale 带来的甜点时刻</h3>
+      </header>
+      <p>对初入职场的我来说，这段工作仍然很 interesting。我被分配去独当一面，把 MoCo v2、SwAV、DINO 这一套 SSL 方案落到阿里内部的多个团队，框架、存储、计算、性能，各种问题一箩筐。数据规模带来真实的 infra 挑战，scale 也确实换来了指标提升。既有难题，也有收益，这是一个甜点时刻。</p>
+<p>我还认识了一群很厉害的 Infra 大佬。当时只道是平常的兄弟，后来再看，一个个都这么有实力。和他们共事，无形中让我觉得算法和 infra 基本没法分开。不管是 Embedded Vision，还是 Scaling Law，算法最终都要在系统里兑现。</p>
+<p>我这样做了一到两年，在表征学习和结构上积累了一些心得（做 Vision 的人真是没 Vision）。YOLOX-PAI、SMT 等公开项目里还能看到那段工作的痕迹，也能看到一种在噪音里包装更多噪音、努力证明自己有价值的影子。可到 2022 年左右，这个甜点时刻也差不多结束了。</p>
+      
+    </section>
+    <section class="prose-section prose-section--chapter" id="lost" data-section-index="7">
+      <header class="section-header">
+        <p class="section-kicker">2022–2023 · Long vision 缺席</p>
+        <h2>2022 至 2023：Lost，和几次没有看懂的转向</h2>
+      </header>
+      <p>我不是一进入 PAI 就迷茫。真正的 Lost 出现在 2022 年以后。局部问题仍然有意思，我却越来越回答不了一个更长的问题：Computer Vision 接下来究竟要去哪里？</p>
+      
+    </section>
+    <section class="prose-section prose-section--subsection" id="open-vocabulary" data-section-index="8">
+      <header class="section-header">
+        <p class="section-kicker">2022 · 类别表开始松动</p>
+        <h3>我错过的 Open-Vocabulary Detection</h3>
+      </header>
+      <p>当时，一些同事和朋友已经去做 Open-Vocabulary Object Detection。我也跟着学过一点，可惜没有今天的见识，follow 得实在太少。</p>
+<p>现在看，那一步其实已经在松 output 了：captions 和语言表示开始决定模型可以识别什么。它还不是自然语言回答，但门已经开了一条缝。我当时没有接着往下想。</p>
+<details class="evidence"><summary>术语边界：Open-Vocabulary 与 Open World</summary><div class="evidence__body"><p>我们当时实际做的主线是 Open-Vocabulary Object Detection：用 captions 和语言表示扩展可检测类别，输出仍然主要是 box 与类别语义。对 Open World Object Detection 也有涉猎，也就是发现 unknown object，并在获得新标签后增量学习。两者不能混写。</p></div></details>
+      
+    </section>
+    <section class="prose-section prose-section--subsection" id="shallow-gpt-moment" data-section-index="9">
+      <header class="section-header">
+        <p class="section-kicker">2022 · 把智能误认成局部问题</p>
+        <h3>最大的浅薄时刻：我嘲笑了自然语言操作 Excel</h3>
+      </header>
+      <p>也是在那时，某位今天已经是大大大大佬的人在做类似 CLIP 的多模态对齐，也开始探索一些我完全无法理解的 NLP 任务。其中一个想法，是让用户用自然语言操作 Excel。</p>
+<p>我们有过简单交流。当年的我完全没有意识到这件事的重要性，还明确表达了自己的嗤之以鼻。显然，我当时只觉得 customized output 是 Vision 的问题，没有意识到这是智能的问题。</p>
+<p>现在回看，这恐怕是我最大的浅薄时刻。这么看，有一点语言学背景真的蛮重要的，哈哈哈哈。</p>
+<details class="evidence"><summary>时间说明：这里的 GPT 时刻指 ChatGPT 3.5 带来的第一轮冲击</summary><div class="evidence__body"><p>这里不再把“GPT 时刻”悬置在 ChatGPT 与 GPT-4 之间。对我最早、最直接的震动来自 2022 年 11 月发布的 ChatGPT 3.5；后续冲击当然持续了数月。《朝闻道》里的场景是借用，“仰望星空时刻”不是小说原文术语。</p></div></details>
+      
+    </section>
+    <section class="prose-section prose-section--subsection prose-section--easyphoto" id="easyphoto" data-section-index="10">
+      <header class="section-header">
+        <p class="section-kicker">2023 · 局部成功</p>
+        <h3>2023，EasyPhoto：虚假的回光返照</h3>
+      </header>
+      <p>GPT 时刻之后，我被狠狠地震惊，却没有把震惊变成方向。缺少高质量交流的我，完全迷失了做任何事情的动力。Vision，not interesting；infra 和 model structure，我也不再主动跟进。</p>
+<p>同期 Diffusion 爆发。生成式输出确实让我迈出了旧判别范式，可我很快又掉回 CV 人 low-hanging fruit 的恶习：这点东西看起来离产品已经很近，似乎很快就能商业化。于是我屁颠屁颠地去做了 <a href="https://github.com/aigc-apps/sd-webui-EasyPhoto" target="_blank" rel="noreferrer">EasyPhoto</a>。</p>
+      
+    <div class="paper-diptych easyphoto-diptych" aria-label="EasyPhoto 项目界面与 GitHub stars 增长">
+      
+    <figure class="paper-card paper-card--easyphoto-ui">
+      <div class="paper-card__media">
+        <img src="https://tosv.byted.org/obj/mmcdata/vlmvideo/visualizations/agentic-computer-vision-blog/preview/assets/easyphoto-train-ui.jpg" alt="EasyPhoto 官方 WebUI 训练界面" width="3290" height="1718" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="paper-card__caption">
+        <span class="paper-card__year">2023</span>
+        <div>
+          <strong>EasyPhoto</strong>
+          <small>Official WebUI</small>
+          <p>官方仓库中的训练界面。把技术变成用户可以操作的产品以后，反馈变得直接而密集。</p>
+          <a href="https://github.com/aigc-apps/sd-webui-EasyPhoto/tree/6c1f8959c4024b0f8a1187fae7c50c0c8f86a8df" target="_blank" rel="noreferrer">EasyPhoto official repository · Apache-2.0</a>
+          
+        </div>
+      </figcaption>
+    </figure>
+      
+    <figure class="paper-card paper-card--easyphoto-stars">
+      <div class="paper-card__media">
+        <img src="https://tosv.byted.org/obj/mmcdata/vlmvideo/visualizations/agentic-computer-vision-blog/preview/assets/easyphoto-github-stars.svg" alt="EasyPhoto GitHub stars 从 2023 年到 2026 年的增长曲线" width="960" height="620" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="paper-card__caption">
+        <span class="paper-card__year">5.1k</span>
+        <div>
+          <strong>即时反馈</strong>
+          <small>GitHub stars</small>
+          <p>历史曲线来自 OSS Insight 对 GH Archive WatchEvent 的重建，口径是累计曾 star 的独立账号，不扣除后续 unstar，数据止于 2026-03-28；空心点是 2026-08-03 单独读取的 GitHub 当前总数。</p>
+          <a href="https://api.ossinsight.io/v1/repos/aigc-apps/sd-webui-EasyPhoto/stargazers/history/?per=day&from=2023-08-25&to=2026-08-03" target="_blank" rel="noreferrer">OSS Insight / GH Archive · GitHub current count</a>
+          
+        </div>
+      </figcaption>
+    </figure>
+    </div>
+      <p>老实说，我做得很开心。GitHub star 涨得很快，我每天做一点边边角角的优化，越来越像一个 PD。可我完全没有意识到，外面的世界正在发生多大的变化。</p>
+<p>我沉浸在 PAI 这个小团队虚假的回光返照里。同一时期，一些更有见识的伙伴已经开始行动。看起来大家都在做正确的事情，而我已经彻底迷失了。</p>
+    </section>
+    <section class="prose-section prose-section--subsection" id="missed-scale" data-section-index="11">
+      <header class="section-header">
+        <p class="section-kicker">工程变量，还是能力边界</p>
+        <h3>回头看：我错过的不是生成，而是 Scale Up</h3>
+      </header>
+      <p>回头看，那段时间其实挺快乐。我已经从之前 data-driven 的垃圾理解范式转向生成问题，似乎走出了一步。可我完全 miss 掉了那个时代最大的主题，Scale Up。</p>
+<p>这不是说我不知道规模有用。我早就在 PAI 做过上亿数据的自监督学习，也亲眼看过数据和算力怎样换来收益。那时我仍把 scale 当成既定任务里的工程变量：数据更多，训练更大，encoder 更好，指标更高。</p>
+<p>我没有及时看见，foundation-model scale 正在改变模型的能力边界，甚至改变问题的定义。输出从判别换成生成，理解技术变化的框架却没有跟着变。EasyPhoto 本身不是失败；问题在于我把即时反馈错当成了长期方向。</p>
+<p>不能说完全没人提醒我。有位朋友几乎见我一次就骂一次：“不要再做垃圾了，你为什么还没离开。”我却心心念念等着在阿里晋升。大望京公园还是去少了；那时如果多约几次散步，也许会早一点醒过来。</p>
+<p>后来我才意识到，自己最大的快乐从来不是组织晋升，而是让技术从不确定走到确定，再走到落地。EasyPhoto 的快乐恰好证明了这一点：它没有替我回答 long vision，却让我重新想起自己到底喜欢做什么。</p>
+<p>这里我要骂一句：阿里巴巴确实挺垃圾的。至少在我当时接触的圈子里，几乎每个人都在吐槽内部像个封建王朝。可另一方面，阿里那几年的工程与研究人才密度又确实是独一档。这样一个让我反复失望的组织，仍然能诞生 Qwen 这样的作品。</p>
+      
+    <figure class="figure figure--diagram figure--balanced figure--scale">
+      <div class="scale-diagram">
+        <section class="scale-diagram__panel">
+          <span class="diagram-label">SAME PROBLEM</span>
+          <h3>既定任务里的工程变量</h3>
+          <div class="scale-diagram__boundary">
+            <span>more data</span><span>same encoder goal</span><span>same output</span>
+          </div>
+          <div class="scale-diagram__meter"><i></i><span>metric ↑</span></div>
+        </section>
+        <section class="scale-diagram__panel scale-diagram__panel--expanding">
+          <span class="diagram-label">CAPABILITY BOUNDARY</span>
+          <h3>Foundation model 改变问题本身</h3>
+          <div class="scale-diagram__expansion">
+            <div class="scale-diagram__rings" aria-hidden="true"></div>
+            <ul class="scale-diagram__capabilities">
+              <li>representation</li>
+              <li>reasoning</li>
+              <li>new combinations</li>
+            </ul>
+          </div>
+          <p class="scale-diagram__conclusion">not only the score → the problem changes</p>
+        </section>
+      </div>
+      <figcaption class="figure__caption"><span class="figure-tag">根据作者回看重绘</span><span>左侧是在既定任务内用更多数据和计算换取指标；右侧是 foundation-model scale 对能力边界和问题定义的扩展。</span></figcaption>
+    </figure>
+    </section>
+    <section class="prose-section prose-section--chapter" id="valley2" data-section-index="12">
+      <header class="section-header">
+        <p class="section-kicker">Valley2 · Language interface</p>
+        <h2>VLM 时代：Valley2 自然语言打开输出</h2>
+      </header>
+      <p>离开阿里以后，感谢我的良师益友 Matt Qiu 给了我一个机会去做 Valley2。</p>
+<p>它很接近我当时心目中的 semantic output vision model。language model 已经让我们看到了一点智能，那这件事能不能推到 Vision？基于大量 vision-language data 做一轮对齐，模型终于能用自然语言理解和回答开放问题。对当时一大批 Vision 从业者，包括我，这确实像找到了一个宣泄口。</p>
+<p>可老 CV 人换了范式，脑子没有那么快换过来。我们还是在想 <code>better pretraining for customized problems</code>，说白了，就是换个范式把 encoder 做得更大：ViT、桥接结构、数据清洗，再给具体任务配数据。这几乎是 CV 从业者本能的顺延。这些活当然有用，也让我慢慢有了做 multimodal model 的 taste；可 output 已经变了，我们理解问题的方式还留在原地。</p>
+<details class="evidence"><summary>术语便签：semantic output 暂时怎样写</summary><div class="evidence__body"><p><code>semantic</code> 太宽，也不是 VLM 时代公认的阶段名。正文保留我当时的说法；需要准确描述变化时，使用 <strong>language interface</strong> 或“自然语言开放输出”：回答不再被预先压成类别、坐标或有限序列。</p></div></details>
+      
+    <figure class="figure  figure--compact figure--valley2">
+      <div class="figure__media">
+        <img src="https://tosv.byted.org/obj/mmcdata/vlmvideo/visualizations/agentic-computer-vision-blog/preview/assets/valley2-structure.jpg" alt="Valley2 从多种视觉输入、SigLIP、projector 到语言模型的整体架构" width="2400" height="1661" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="figure__caption">
+        <span class="figure-tag">公开项目图</span>
+        <span>Valley2 把 single image、multi-image 与 video 通过 SigLIP、projector 和新增 tokens 接入语言模型。</span>
+        <a class="figure__source" href="https://github.com/bytedance/Valley" target="_blank" rel="noreferrer">Valley · Apache-2.0</a>
+      </figcaption>
+    </figure>
+    </section>
+    <section class="prose-section prose-section--chapter" id="o1-composition" data-section-index="13">
+      <header class="section-header">
+        <p class="section-kicker">o1 · Compositional reasoning</p>
+        <h2>o1 时刻：从定制任务走向能力组合</h2>
+      </header>
+      <p>在国内从业者迎来 R1 时刻以前，o1 已经帮我们从 customized problem 走向组合问题：感知、OCR、计算和推理可以被串起来，完成任何单一能力都覆盖不了的复杂任务。</p>
+<p>在 o1 之后、R1 公布之前，我们已经在 Valley 上做了 LLaVA-CoT 和 DPO，也取得了不错的结果。那时我们很兴奋地发现，感知和推理虽然可以解耦地存在于模型能力中，可一旦把它们组合起来，确实能解决复杂得多的问题。</p>
+<p>CoT 和 DPO 在方法上不同，但在我们当时的实践里是一脉相承的：我们找出有效的 reasoning pattern 或 preference，再给模型学。公开的 Valley2 方案把过程拆成 summary、caption、reasoning 和 conclusion，几乎就是我们当时理解的一个截面：能力已经在模型里，人的任务是把好用的组合枚举出来，再教给它。</p>
+<details class="evidence"><summary>时间线：公开记录不能倒推内部实验顺序</summary><div class="evidence__body"><p>o1-preview 于 2024 年 9 月发布，Valley2 论文于 2025 年 1 月 10 日公开；DeepSeek-R1 模型于 1 月 20 日发布，论文于 1 月 22 日提交。Valley2 论文记录了 LLaVA-CoT，没有写 DPO；公开仓库到 2 月 9 日才宣布 Valley2-DPO。据我的内部经历，DPO 实验早于 1 月 20 日；2 月 9 日只是公开记录，不能倒推实验顺序。</p>
+<p>DPO 的 preference pairs 不一定由人逐条给出，也可以来自模型、规则或合成流程。公开材料没有说明 Valley2-DPO 的具体偏好来源，所以正文只说训练流程先提供外部构造的偏好关系。</p></div></details>
+      
+    <figure class="figure  figure--paper-case">
+      <div class="figure__media">
+        <img src="https://tosv.byted.org/obj/mmcdata/vlmvideo/visualizations/agentic-computer-vision-blog/preview/assets/valley2-cot-case.jpg" alt="Valley2 论文对比无 CoT 训练与 CoT post-training 处理披萨菜单计算题的过程" width="2400" height="1077" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="figure__caption">
+        <span class="figure-tag">Valley2 · Figure 3</span>
+        <span>同一道菜单计算题中，Figure 3 对比了无 CoT 训练和 CoT post-training 的输出。后者按预设的 summary、caption、reasoning、conclusion 流程组合 OCR、定位和计算。</span>
+        <a class="figure__source" href="https://arxiv.org/abs/2501.05901" target="_blank" rel="noreferrer">Valley2 Figure 3 · CC BY 4.0</a>
+      </figcaption>
+    </figure>
+    </section>
+          
+    <section class="notes" id="notes">
+      <p class="section-kicker">Notes &amp; sources</p>
+      <h2>公开材料只校对它能够证明的部分</h2>
+      <ol class="notes-list">
+        
+              <li>
+                <a href="https://www.cs.cmu.edu/~tom/pubs/NeedForBias_1980.pdf" target="_blank" rel="noreferrer">The Need for Biases in Learning Generalizations</a>
+                <span>Mitchell 1980 是机器学习中 inductive bias 定义的经典早期来源；本文不声称它首次创造了这个词。</span>
+              </li>
+              <li>
+                <a href="https://github.com/wuziheng/GestureDetect-Violajones-CNN-" target="_blank" rel="noreferrer">GestureDetect 项目仓库</a>
+                <span>只核对公开系统与自测记录，不证明比赛名次。</span>
+              </li>
+              <li>
+                <a href="https://openaccess.thecvf.com/content_CVPR_2020/html/He_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper.html" target="_blank" rel="noreferrer">MoCo, CVPR 2020</a>
+                <span>用于核对 momentum encoder 与 queue；“没有重构 output/reward”是作者回看。</span>
+              </li>
+              <li>
+                <a href="https://arxiv.org/abs/2304.07193" target="_blank" rel="noreferrer">DINOv2</a>
+                <span>两者覆盖图像级与稠密像素级任务；本文只讨论它们没有主动改变 output interface 与 observation policy，不能概括为‘只做分类检索’。</span>
+              </li>
+              <li>
+                <a href="https://proceedings.neurips.cc/paper/2020/hash/70feb62b69f16e0238f741fab228fec2-Abstract.html" target="_blank" rel="noreferrer">SwAV, NeurIPS 2020</a>
+                <span>用于核对 swapped assignment、online clustering 与 multi-crop；局部 crop 不被解释为包含整张图的全部信息。</span>
+              </li>
+              <li>
+                <a href="https://openaccess.thecvf.com/content/CVPR2021/html/Zareian_Open-Vocabulary_Object_Detection_Using_Captions_CVPR_2021_paper.html" target="_blank" rel="noreferrer">Open-Vocabulary Object Detection Using Captions</a>
+                <span>用于区分 Open-Vocabulary 与 Open World Object Detection。</span>
+              </li>
+              <li>
+                <a href="https://openai.com/index/chatgpt/" target="_blank" rel="noreferrer">ChatGPT 发布页</a>
+                <span>核对 2022-11-30 的公开时间。</span>
+              </li>
+              <li>
+                <a href="https://github.com/aigc-apps/sd-webui-EasyPhoto" target="_blank" rel="noreferrer">EasyPhoto</a>
+                <span>公开仓库与训练界面；个人感受和角色仍由作者口述。</span>
+              </li>
+              <li>
+                <a href="https://github.com/bytedance/Valley" target="_blank" rel="noreferrer">Valley2</a>
+                <span>公开架构与论文；公开日期不用于倒推内部实验顺序。</span>
+              </li>
+              <li>
+                <a href="https://openai.com/index/learning-to-reason-with-llms/" target="_blank" rel="noreferrer">OpenAI o1</a>
+                <span>用于公开时间与 reasoning 能力描述。</span>
+              </li>
+      </ol>
+      <p class="notes-disclaimer">论文署名、专利署名和 GitHub 提交不用于推断作者的角色、投入程度或职业主线。个人经历、内部时间与当时的心理状态仍以作者口述和后续可公开材料为准。</p>
+    </section>
+          <nav class="part-navigation" aria-label="上下篇导航">
+      <a class="part-navigation__link part-navigation__link--next" href="part-2.html">
+        <span>继续下篇</span>
+        <strong>模型会说以后，为什么还不会看</strong>
+      </a></nav>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>From inductive bias to semantic, finally Agentic computer vision</p>
+    <a href="#main-content">回到正文开头 ↑</a>
+  </footer>
+</body>
+</html>
