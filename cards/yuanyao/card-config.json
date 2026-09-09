@@ -1,0 +1,38 @@
+{
+  "title": "元瑶",
+  "subtitle": "你只管做你想做的",
+  "technique": "一念向道，一步护人",
+  "tagline": "外海风云 · 光影典藏",
+  "edition": "No.002",
+  "collection": "凡人 · 瞬间典藏",
+  "description": "光丝明灭，她有想守住的人。\n这一刻，有人站在她身前。",
+  "cardWidth": 9.6,
+  "cardHeight": 5.4,
+  "parameters": {
+    "subjectScale": 1.0,
+    "subjectDepth": 0.2,
+    "backgroundDepth": -0.16,
+    "foil": 0.55
+  },
+  "safeArea": {
+    "scale": 1.0,
+    "offset": [
+      0,
+      0
+    ]
+  },
+  "source": {
+    "work": "凡人修仙传",
+    "episode": 136,
+    "chapter": "外海风云12",
+    "url": "https://www.bilibili.com/bangumi/play/ep1231544",
+    "note": "根据用户截图分层修复；卡名、副标题为用户指定。"
+  },
+  "assets": {
+    "subject": "./assets/subject.webp",
+    "background": "./assets/background.webp",
+    "text": "./assets/text.png",
+    "lineart": "./assets/lineart.webp",
+    "model": "./assets/card.glb"
+  }
+}
