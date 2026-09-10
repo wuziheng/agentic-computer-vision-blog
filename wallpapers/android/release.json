@@ -1,9 +1,9 @@
 {
-  "version": "0.2.1",
-  "filename": "holo-wallpaper-0.2.1.apk",
-  "bytes": 10768037,
-  "sha256": "caf4fe42f3561905a8bfa594bc71b388fbf0cc7192b856fafe3a56863dae00d9",
+  "version": "0.2.2",
+  "filename": "holo-wallpaper-0.2.2.apk",
+  "bytes": 10731527,
+  "sha256": "d36900f2db3c41ac41a2b567f8d9800d36817ae6a0f7acce808d6074d5dc2237",
   "package": "io.wuziheng.holowall",
   "kind": "debug-prototype",
-  "versionCode": 5
+  "versionCode": 6
 }
