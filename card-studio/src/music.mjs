@@ -1,6 +1,6 @@
 import {makeSpin, sampleSpin, clipTiming} from './spin.mjs';
 
-export function createPerformance({pose, begin, finish}) {
+export function createPerformance({pose, begin, finish, track, caption}) {
   const $=id=>document.getElementById(id), audio=$('soundtrack');
   let run=null, request=0, objectURL=null, frozen=false, phase='';
   const say=text=>{$('music-status').textContent=text;};
@@ -53,8 +53,8 @@ export function createPerformance({pose, begin, finish}) {
   });
   $('demo-music').onclick=()=>{
     cancel();if(objectURL){URL.revokeObjectURL(objectURL);objectURL=null;}
-    audio.src='./assets/quiet-promise.wav';audio.load();$('clip-start').value=0;$('clip-duration').value=8;
-    $('track-name').textContent='此刻 · 氛围小样';$('track-note').textContent='临时合成配乐 · 非动画原曲';say('已切回示范配乐');
+    audio.src=track?.url||'./assets/quiet-promise.wav';audio.load();$('clip-start').value=0;$('clip-duration').value=8;
+    $('track-name').textContent=track?.title||'此刻 · 氛围小样';$('track-note').textContent='临时合成配乐 · 非动画原曲';say('已切回示范配乐');
   };
   for(const id of ['clip-start','clip-duration'])$(id).addEventListener('change',()=>cancel('片段已调整，点击旋转入画试听。'));
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&run&&!audio.paused)audio.pause();});
@@ -64,7 +64,7 @@ export function createPerformance({pose, begin, finish}) {
       if(!run)return null;
       const state=sampleSpin(run,audio.currentTime-run.start);
       $('spin-progress').value=state.progress;
-      if(state.phase!==phase){phase=state.phase;$('spin-phase').textContent=phase;}
+      if(state.phase!==phase){phase=state.phase;$('spin-phase').textContent=state.done&&caption?'定格 · '+caption:phase;}
       if(state.done&&!frozen){frozen=true;finish();}
       if(!state.done){if(frozen)begin();frozen=false;}
       return state;

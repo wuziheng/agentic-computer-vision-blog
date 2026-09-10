@@ -1,5 +1,5 @@
 {
-  "title": "元瑶",
+  "title": "元瑶 · 护道还魂",
   "subtitle": "你只管做你想做的",
   "technique": "一念向道，一步护人",
   "tagline": "外海风云 · 光影典藏",
@@ -34,5 +34,7 @@
     "text": "./assets/text.png",
     "lineart": "./assets/lineart.webp",
     "model": "./assets/card.glb"
-  }
+  },
+  "assetVersion": "aba944aaa1c3",
+  "motion": "right"
 }

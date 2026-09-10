@@ -1,3 +1,5 @@
+import {sceneFragment} from './scene-effects.mjs';
+import {sceneMotion} from './scene-motion.mjs';
 import * as THREE from 'three';
 import {createPerformance} from './music.mjs';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
@@ -10,7 +12,8 @@ const stage=document.querySelector('#stage'), loading=document.querySelector('#l
 const $=id=>document.getElementById(id);
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let renderer,composer,root,face,uniforms,config,auto=false,flipped=false,dragging=false;
-let targetX=0.015,targetY=-0.08,targetZoom=1;
+let targetX=0.015,targetY=-0.08,targetZoom=1,targetAdvance=0,advance=0;
+const targetPan=new THREE.Vector2(),pan=new THREE.Vector2();
 const restingQuaternion=new THREE.Quaternion(),restingEuler=new THREE.Euler(),origin=new THREE.Vector3(),unitScale=new THREE.Vector3(1,1,1);
 let last={x:0,y:0},lastTime=0,elapsed=0,performance=null,down=null;
 const scene=new THREE.Scene();
@@ -19,15 +22,15 @@ const vertex=`varying vec2 vUv;
 void main(){vUv=vec2(uv.x,1.0-uv.y);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`;
 const shared=`precision highp float;
 varying vec2 vUv;
-uniform float uTime,uFoil,uScale,uDepth,uBgDepth,uSafeScale;
-uniform vec2 uSafeOffset;
+uniform float uTime,uFoil,uScale,uDepth,uBgDepth,uSafeScale,uAdvance;
+uniform vec2 uSafeOffset,uPan;
 uniform vec3 uView;
 float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);}
 vec3 spectrum(float t){t=fract(t);vec3 pink=vec3(.38,.75,.93),yellow=vec3(1.,.84,.54),blue=vec3(.30,.64,.98);if(t<.35)return mix(pink,yellow,t/.35);if(t<.7)return mix(yellow,blue,(t-.35)/.35);return mix(blue,vec3(1.),(t-.7)/.3);}
 vec3 overlay(vec3 b,vec3 f){return mix(2.*b*f,1.-2.*(1.-b)*(1.-f),step(vec3(.5),b));}
 float inside(vec2 p){return step(0.,p.x)*step(0.,p.y)*step(p.x,1.)*step(p.y,1.);}
-vec2 parallax(vec2 p,float s,float d){return (p-.5)*s+.5+uView.xy/max(abs(uView.z),.35)*d*.14;}
+vec2 parallax(vec2 p,float s,float d){float weight=d>=0.?1.:.30;return (p-.5)*(s-uAdvance*.18*weight)+.5+uPan*weight+uView.xy/max(abs(uView.z),.35)*d*.14;}
 float wave(vec2 p){vec2 a=p+uView.xy*2.4;return .5+.5*sin((a.x*.848-a.y*.530)*6.283*.55+7.*noise(a*1.5));}
 float star(vec2 p){vec2 q=p*105.,id=floor(q),f=fract(q);float first=9.,second=9.;for(int y=-1;y<=1;y++){for(int x=-1;x<=1;x++){vec2 g=vec2(float(x),float(y));vec2 o=vec2(hash(id+g),hash(id+g+43.3));float d=length(g+o-f);if(d<first){second=first;first=d;}else second=min(second,d);}}float edge=1.-smoothstep(.01,.035,second-first);float sparse=step(.90,hash(id+8.8));float twinkle=pow(.5+.5*sin(uTime*1.8+hash(id)*30.+uView.x*27.+uView.y*21.),6.);return edge*sparse*twinkle;}
 `;
@@ -73,45 +76,59 @@ function backTexture(){
  const c=document.createElement('canvas');c.width=1672;c.height=941;const ctx=c.getContext('2d');
  ctx.strokeStyle='#708d9a';ctx.lineWidth=1.5;ctx.strokeRect(44,44,1584,853);ctx.strokeStyle='#344958';ctx.strokeRect(53,53,1566,835);
  ctx.save();ctx.translate(836,402);ctx.strokeStyle='#547685';ctx.lineWidth=1;
- for(let j=0;j<25;j++){ctx.beginPath();for(let k=0;k<=110;k++){const y=-215+k*4;const x=Math.sin(y*.013+j*.23)*30+(j-12)*7*(.5+Math.abs(y)/170);if(k===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();}ctx.restore();
+ if(config.effect==='portal'){
+  for(let r=55;r<235;r+=32){ctx.beginPath();ctx.ellipse(0,0,r,r*.74,0,0,Math.PI*2);ctx.stroke();}
+  for(let n=0;n<40;n++){const a=n*Math.PI/20;ctx.beginPath();ctx.moveTo(Math.cos(a)*180,Math.sin(a)*134);ctx.lineTo(Math.cos(a)*224,Math.sin(a)*166);ctx.stroke();}
+ }else if(config.effect==='fireworks'){
+  for(let j=0;j<3;j++){const x=(j-1)*145,y=j===1?-80:0;for(let n=0;n<32;n++){const a=n*Math.PI/16;ctx.beginPath();ctx.moveTo(x+Math.cos(a)*40,y+Math.sin(a)*40);ctx.lineTo(x+Math.cos(a)*120,y+Math.sin(a)*120);ctx.stroke();}}
+ }else if(config.effect==='moon'){
+  for(const r of [158,171,184]){ctx.beginPath();ctx.arc(0,-30,r,0,Math.PI*2);ctx.stroke();}
+  ctx.beginPath();ctx.ellipse(0,70,232,30,0,0,Math.PI*2);ctx.stroke();
+ }else{
+  for(let j=0;j<25;j++){ctx.beginPath();for(let k=0;k<=110;k++){const y=-215+k*4;const x=Math.sin(y*.013+j*.23)*30+(j-12)*7*(.5+Math.abs(y)/170);if(k===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();}
+ }
+ ctx.restore();
  ctx.textAlign='center';ctx.fillStyle='#e7e7da';ctx.font='76px "Songti SC",STSong,serif';ctx.fillText(config.title,836,650);
  ctx.fillStyle='#b8c6c9';ctx.font='28px "Songti SC",serif';ctx.fillText(config.subtitle,836,710);
- ctx.font='19px "PingFang SC",sans-serif';ctx.fillStyle='#8499a6';ctx.fillText('凡人修仙传 · 外海风云12 · 第136集',836,805);
- ctx.font='16px Georgia';ctx.fillText('No.002   /   PRIVATE COLLECTION',836,853);
+ ctx.font='19px "PingFang SC",sans-serif';ctx.fillStyle='#8499a6';ctx.fillText(config.sceneLabel||'凡人修仙传 · 外海风云12 · 第136集',836,805);
+ ctx.font='16px Georgia';ctx.fillText((config.edition||'No.002')+'   /   PRIVATE COLLECTION',836,853);
  const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.NoColorSpace;return tex;
 }
 async function init(){
- config=await fetch('./card-config.json').then(r=>{if(!r.ok)throw Error('找不到卡牌配置');return r.json();});
+ config=await fetch('./card-config.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error('找不到卡牌配置');return r.json();});
  document.title=config.title+' · 幻光典藏';for(const [id,key]of Object.entries({'card-title':'title','collection':'collection','subtitle':'subtitle','description':'description','tagline':'tagline','technique':'technique','edition':'edition'}))if(config[key])$(id).textContent=config[key];
  renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true,powerPreference:'high-performance'});renderer.setClearColor(0x000000,1);renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;stage.append(renderer.domElement);
  composer=new EffectComposer(renderer);composer.addPass(new RenderPass(scene,camera));composer.addPass(new UnrealBloomPass(new THREE.Vector2(720,1000),.18,.35,1.0));composer.addPass(new OutputPass());
- const loader=new THREE.TextureLoader();const names=['subject','background','text','lineart'];const textures=await Promise.all(names.map(name=>loader.loadAsync(config.assets[name])));textures.forEach(t=>{t.colorSpace=THREE.NoColorSpace;t.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),8);});
+ const loader=new THREE.TextureLoader();const names=['subject','background','text','lineart'];const textures=await Promise.all(names.map(name=>loader.loadAsync(config.assets[name]+(config.assetVersion?'?v='+config.assetVersion:''))));textures.forEach(t=>{t.colorSpace=THREE.NoColorSpace;t.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),8);});
  const prm=config.parameters||{};uniforms={tSubject:{value:textures[0]},tBackground:{value:textures[1]},tText:{value:textures[2]},tLine:{value:textures[3]},tBack:{value:backTexture()},uTime:{value:0},uView:{value:new THREE.Vector3(0,0,1)},uFoil:{value:prm.foil??.65},uScale:{value:prm.subjectScale??1.25},uDepth:{value:prm.subjectDepth??.4},uBgDepth:{value:prm.backgroundDepth??-.25},uSafeScale:{value:config.safeArea?.scale??1.12},uSafeOffset:{value:new THREE.Vector2(...(config.safeArea?.offset??[-.06,-.085]))}};
- const frontMat=new THREE.ShaderMaterial({uniforms,vertexShader:vertex,fragmentShader:fragment,side:THREE.FrontSide});const edgeMat=new THREE.ShaderMaterial({uniforms,vertexShader:vertex,fragmentShader:edgeFragment});const backMat=new THREE.ShaderMaterial({uniforms,vertexShader:vertex,fragmentShader:backFragment});const goldMat=new THREE.MeshBasicMaterial({color:0x9fafbc});
+ uniforms.uPan={value:pan};uniforms.uAdvance={value:0};uniforms.uScene={value:({portal:1,fireworks:2,moon:3})[config.effect]||0};uniforms.uAccent={value:new THREE.Color(config.accent||'#b9cbd2')};
+ const frontMat=new THREE.ShaderMaterial({uniforms,vertexShader:vertex,fragmentShader:config.effect?sceneFragment(shared):fragment,side:THREE.FrontSide});const edgeMat=new THREE.ShaderMaterial({uniforms,vertexShader:vertex,fragmentShader:edgeFragment});const backMat=new THREE.ShaderMaterial({uniforms,vertexShader:vertex,fragmentShader:backFragment});const goldMat=new THREE.MeshBasicMaterial({color:0x9fafbc});
  const gltf=await new GLTFLoader().loadAsync(config.assets.model);root=new THREE.Group();root.add(gltf.scene);scene.add(root);
  gltf.scene.traverse(ob=>{if(!ob.isMesh)return;const role=ob.material?.name;if(role==='web_front'){ob.material=frontMat;face=ob;}else if(role==='web_back')ob.material=backMat;else if(role==='web_gold')ob.material=goldMat;else if(role==='web_text')ob.visible=false;else ob.material=edgeMat;});
  if(!face)throw Error('Blender 模型中缺少 web_front 材质，请重新导出模型。');
- performance=createPerformance({pose:()=>({quaternion:root.quaternion.toArray(),position:root.position.toArray(),scale:root.scale.x}),begin:()=>{targetZoom=1;resize();setAuto(false);dragging=false;flipped=false;$('flip').innerHTML='翻看背面 <span>↻</span>';$('view-label').textContent='IN MOTION · 流转';},finish:()=>{$('view-label').textContent='FRONT · 此刻定格';}});
- setupControls();new ResizeObserver(resize).observe(stage);resize();loading.remove();
+ performance=createPerformance({track:config.music,caption:config.effect?config.subtitle:null,pose:()=>({quaternion:root.quaternion.toArray(),position:root.position.toArray(),scale:root.scale.x}),begin:()=>{targetZoom=1;resize();setAuto(false);dragging=false;flipped=false;$('flip').innerHTML='翻看背面 <span>↻</span>';$('view-label').textContent='IN MOTION · 流转';},finish:()=>{$('view-label').textContent='FRONT · 此刻定格';}});
+ if(config.motion){targetX=targetY=0;const pose=sceneMotion(config.motion,0);targetAdvance=advance=pose.advance;targetPan.set(pose.x,pose.y);pan.copy(targetPan);}
+ setupControls();if(config.motion&&!reduced)setAuto(true);new ResizeObserver(resize).observe(stage);resize();loading.remove();
  window.__holo={ready:true,config,renderer,root,uniforms,reset,modelSource:config.assets.model};renderer.setAnimationLoop(animate);
 }
 function resize(){const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h||!renderer)return;const aspect=w/h;const halfH=Math.max(3.35,5.55/aspect)/targetZoom;camera.left=-halfH*aspect;camera.right=halfH*aspect;camera.top=halfH;camera.bottom=-halfH;camera.updateProjectionMatrix();renderer.setSize(w,h);composer.setSize(w,h);}
-function setAuto(value){auto=value;$('auto').setAttribute('aria-pressed',String(auto));$('auto').innerHTML=auto?'<span>Ⅱ</span> 暂停赏卡':'<span>▷</span> 自动赏卡';}
-function interrupt(){if(!performance?.active)return;performance.cancel();flipped=new THREE.Vector3(0,0,1).applyQuaternion(root.quaternion).z<0;targetX=.015;targetY=flipped?Math.PI:-.08;}
-function reset(){interrupt();targetX=.015;targetY=-.08;targetZoom=1;$('flip').innerHTML='翻看背面 <span>↻</span>';flipped=false;setAuto(false);$('view-label').textContent='FRONT · 正面';resize();}
+function setAuto(value){auto=value;$('auto').setAttribute('aria-pressed',String(auto));$('auto').innerHTML=config.effect==='fireworks'?(auto?'<span>Ⅱ</span> 暂停推镜':'<span>▷</span> 自动推镜'):(auto?'<span>Ⅱ</span> 暂停运镜':'<span>▷</span> 自动运镜');}
+function interrupt(){if(!performance?.active)return;performance.cancel();flipped=new THREE.Vector3(0,0,1).applyQuaternion(root.quaternion).z<0;targetX=config.effect==='fireworks'?0:.015;targetY=flipped?Math.PI:(config.effect==='fireworks'?0:-.08);}
+function reset(){interrupt();targetX=config.effect==='fireworks'?0:.015;targetY=config.effect==='fireworks'?0:-.08;targetZoom=1;targetAdvance=0;targetPan.set(0,0);$('flip').innerHTML='翻看背面 <span>↻</span>';flipped=false;setAuto(false);$('view-label').textContent='FRONT · 正面';resize();}
 function flip(){interrupt();flipped=!flipped;setAuto(false);targetY=flipped?Math.PI:0;targetX=0;$('flip').innerHTML=flipped?'回到正面 <span>↻</span>':'翻看背面 <span>↻</span>';$('view-label').textContent=flipped?'BACK · 背面':'FRONT · 正面';}
 function setupControls(){
  for(const [id,name,label] of [['foil','uFoil','foil-value'],['scale','uScale','scale-value'],['depth','uDepth','depth-value'],['bg-depth','uBgDepth','bg-depth-value']]){const input=$(id);input.value=uniforms[name].value;const update=()=>{uniforms[name].value=Number(input.value);$(label).value=id==='foil'?Math.round(input.value*100)+'%':Number(input.value).toFixed(2);};input.addEventListener('input',update);update();}
  stage.addEventListener('pointerdown',e=>{if(e.button!==0)return;interrupt();dragging=true;setAuto(false);down={x:e.clientX,y:e.clientY};last={x:e.clientX,y:e.clientY};stage.setPointerCapture(e.pointerId);stage.focus({preventScroll:true});});
- stage.addEventListener('pointermove',e=>{if(!dragging)return;const base=flipped?Math.PI:0;targetY=THREE.MathUtils.clamp(targetY+(e.clientX-last.x)*.006,base-.38,base+.38);targetX=THREE.MathUtils.clamp(targetX+(e.clientY-last.y)*.005,-.23,.23);last={x:e.clientX,y:e.clientY};});
+ stage.addEventListener('pointermove',e=>{if(!dragging)return;if(config.effect==='fireworks'){targetAdvance=THREE.MathUtils.clamp(targetAdvance-(e.clientY-last.y)*.004,-.5,.8);last={x:e.clientX,y:e.clientY};return;}const base=flipped?Math.PI:0;targetY=THREE.MathUtils.clamp(targetY+(e.clientX-last.x)*.006,base-.38,base+.38);targetX=THREE.MathUtils.clamp(targetX+(e.clientY-last.y)*.005,-.23,.23);last={x:e.clientX,y:e.clientY};});
  const up=()=>{dragging=false;down=null;};stage.addEventListener('pointerup',e=>{const tap=down&&Math.hypot(e.clientX-down.x,e.clientY-down.y)<6;up();if(tap)performance.start();});stage.addEventListener('pointercancel',up);stage.addEventListener('lostpointercapture',up);
- stage.addEventListener('wheel',e=>{e.preventDefault();targetZoom=THREE.MathUtils.clamp(targetZoom-e.deltaY*.001,.82,1.18);resize();},{passive:false});
+ stage.addEventListener('wheel',e=>{e.preventDefault();if(config.effect==='fireworks'){interrupt();setAuto(false);targetAdvance=THREE.MathUtils.clamp(targetAdvance-e.deltaY*.002,-.5,.8);return;}targetZoom=THREE.MathUtils.clamp(targetZoom-e.deltaY*.001,.82,1.18);resize();},{passive:false});
  stage.addEventListener('keydown',e=>{
   if(e.key===' '){e.preventDefault();performance.start();return;}
   if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','f','F','r','R'].includes(e.key))return;
   e.preventDefault();interrupt();setAuto(false);
   if(e.key.toLowerCase()==='f'){flip();return;}if(e.key.toLowerCase()==='r'){reset();return;}
   const base=flipped?Math.PI:0;
+  if(config.effect==='fireworks'){if(e.key==='ArrowUp')targetAdvance=Math.min(.8,targetAdvance+.12);if(e.key==='ArrowDown')targetAdvance=Math.max(-.5,targetAdvance-.12);return;}
   if(e.key==='ArrowLeft')targetY-=.07;if(e.key==='ArrowRight')targetY+=.07;if(e.key==='ArrowUp')targetX-=.06;if(e.key==='ArrowDown')targetX+=.06;
   targetY=THREE.MathUtils.clamp(targetY,base-.38,base+.38);targetX=THREE.MathUtils.clamp(targetX,-.23,.23);
  });
@@ -125,9 +142,10 @@ function animate(now){
  const frame=performance?.frame();
  if(frame){root.quaternion.fromArray(frame.quaternion);root.position.fromArray(frame.position);root.scale.setScalar(frame.scale);}
  else {
-  if(auto){targetY=Math.sin(elapsed*.45)*.24;targetX=Math.sin(elapsed*.6)*.075;}
+  if(auto){if(config.motion){const pose=sceneMotion(config.motion,elapsed);targetAdvance=pose.advance;targetPan.set(pose.x,pose.y);targetX=targetY=0;}else{targetY=Math.sin(elapsed*.45)*.24;targetX=Math.sin(elapsed*.6)*.075;}}
   const ease=reduced?1:1-Math.exp(-dt*8);restingQuaternion.setFromEuler(restingEuler.set(targetX,targetY,0));root.quaternion.slerp(restingQuaternion,ease);root.position.lerp(origin,ease);root.scale.lerp(unitScale,ease);
  }
+ advance+=(targetAdvance-advance)*(1-Math.exp(-dt*3));uniforms.uAdvance.value=advance;pan.lerp(targetPan,1-Math.exp(-dt*3));
  root.updateMatrixWorld(true);
  uniforms.uView.value.copy(camera.position).applyMatrix4(new THREE.Matrix4().copy(root.matrixWorld).invert()).normalize();
  if(frame)uniforms.uTime.value=frame.time;
@@ -135,4 +153,3 @@ function animate(now){
  composer.render();
 }
 init().catch(error=>{console.error(error);loading.textContent='卡牌暂时无法加载。\n'+error.message+'\n请通过本地服务打开网页，并确认素材已生成。';loading.setAttribute('role','alert');window.__holo={ready:false,error:error.message};});
-

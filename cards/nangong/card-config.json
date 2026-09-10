@@ -1,0 +1,47 @@
+{
+  "title": "月满相逢",
+  "subtitle": "千山赴约，只为与你相望",
+  "technique": "月华静 · 此心明",
+  "tagline": "月下相逢 · 韩立与南宫婉",
+  "edition": "No.005",
+  "description": "风波已过，月色正满。\n万语千言，先藏在这一眼里。",
+  "sceneLabel": "抢人之后 · 月前对视（选景待确认）",
+  "effect": "moon",
+  "motion": "outward",
+  "accent": "#bdd0ef",
+  "english": "UNDER THE SAME MOON",
+  "review": "重点看：是否为抢人成功后你指定的月前对视画面，以及人物表情和月光。",
+  "collection": "凡人 · 瞬间典藏",
+  "cardWidth": 9.6,
+  "cardHeight": 5.4,
+  "parameters": {
+    "subjectScale": 1,
+    "subjectDepth": 0.12,
+    "backgroundDepth": -0.08,
+    "foil": 0.38
+  },
+  "safeArea": {
+    "scale": 1,
+    "offset": [
+      0,
+      0
+    ]
+  },
+  "source": {
+    "work": "凡人修仙传",
+    "url": "https://haowallpaper.com/homeViewLook/19218400522883968",
+    "note": "按用户补充“176集之后，抢人打败师姐之后”选择满月前对视构图。参考哲风壁纸收录的韩立、南宫婉画面；该收录图的精确集数与是否二次修复尚未核实，不标作官方原帧。人物和背景再次分层修复，供选景 review。"
+  },
+  "music": {
+    "title": "月满相逢 · 氛围小样",
+    "url": "./assets/quiet-promise.wav"
+  },
+  "assets": {
+    "subject": "./assets/subject.webp",
+    "background": "./assets/background.webp",
+    "text": "./assets/text.webp",
+    "lineart": "./assets/lineart.webp",
+    "model": "./assets/card.glb"
+  },
+  "assetVersion": "94988cfababa"
+}
