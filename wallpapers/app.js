@@ -48,10 +48,10 @@ void main(){
  ambience+=spectral(vUv.y*.25+uTime*.012)*ambientSweep*uFoil*.024;
  float progress=(1.-cos(uTime*3.14159265/16.))*.5;
  vec2 pan=vec2(0.);float advance=0.;
- if(uMotion>.5&&uMotion<1.5){pan.y=.027-.054*progress;advance=.4;}
- else if(uMotion<2.5&&uMotion>1.5)advance=.05+.6*progress;
- else if(uMotion<3.5&&uMotion>2.5){pan.x=-.03+.06*progress;advance=.36;}
- else if(uMotion>3.5)advance=.65*(1.-progress);
+ if(uMotion>.5&&uMotion<1.5){pan.y=.045-.09*progress;advance=.65;}
+ else if(uMotion<2.5&&uMotion>1.5)advance=.05+1.0*progress;
+ else if(uMotion<3.5&&uMotion>2.5){pan.x=-.05+.10*progress;advance=.60;}
+ else if(uMotion>3.5)advance=1.05*(1.-progress);
  vec2 bp=(p-.5)*(1.-advance*.18*.30)+.5+pan*.30+uTilt*uBgDepth*.055;
  vec2 sp=(p-.5)*(1.-advance*.18)+.5+pan+uTilt*uDepth*.055;
  if(uScene>1.5&&uScene<2.5){
