@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "tiannan-001",
+  "title": "别天南",
+  "subtitle": "此去山海，自有归途",
+  "effect": "portal",
+  "motion": "rise",
+  "aspect": 1.7777777777777777,
+  "assets": {
+    "subject": {
+      "url": "assets/23b5efbe51ae2276aa3e52e2efb93f4c5a6dc4b536fe46b0e2da0b45b46d25e5.webp",
+      "sha256": "23b5efbe51ae2276aa3e52e2efb93f4c5a6dc4b536fe46b0e2da0b45b46d25e5",
+      "bytes": 72140
+    },
+    "background": {
+      "url": "assets/f9422201acb8722630106f330c22c8c0617ae5c844617605e5d0e5b8cd46e9d3.webp",
+      "sha256": "f9422201acb8722630106f330c22c8c0617ae5c844617605e5d0e5b8cd46e9d3",
+      "bytes": 65676
+    },
+    "text": {
+      "url": "assets/2a5d5e1da36ea3753f8a7063eb241b300b457fef113131214c5a4ce519be7b9f.webp",
+      "sha256": "2a5d5e1da36ea3753f8a7063eb241b300b457fef113131214c5a4ce519be7b9f",
+      "bytes": 15412
+    },
+    "lineart": {
+      "url": "assets/bf49c1b2d5604ec67b0b8137342f6f7fae1e2fdaef25585f956a78f84c0695cc.webp",
+      "sha256": "bf49c1b2d5604ec67b0b8137342f6f7fae1e2fdaef25585f956a78f84c0695cc",
+      "bytes": 532336
+    }
+  },
+  "parameters": {
+    "foil": 0.5,
+    "subjectDepth": 0.16,
+    "backgroundDepth": -0.12
+  },
+  "source": {
+    "work": "凡人修仙传",
+    "url": "https://www.bilibili.com/video/BV1paPnzdEog?p=2",
+    "note": "参考公开片段 P2 约 40.8 秒，王婵肩侧视角看向金色传送光幕中的韩立，改为用户指定的平视构图。参考片段为 UP 主修复版，人物与环境另经 AI 分层处理，非未经修改的官方原帧。"
+  },
+  "revision": "1b7a4356d3f5c403"
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "yuanyao-001",
+  "title": "元瑶 · 护道还魂",
+  "subtitle": "你只管做你想做的",
+  "effect": "foil",
+  "motion": "right",
+  "aspect": 1.7777777777777777,
+  "assets": {
+    "subject": {
+      "url": "assets/e600892254293b78cc8182a531a1fd12e4f403803725b91774794bc0525876b4.webp",
+      "sha256": "e600892254293b78cc8182a531a1fd12e4f403803725b91774794bc0525876b4",
+      "bytes": 187570
+    },
+    "background": {
+      "url": "assets/bbd455ebf9900be0767a9eccc3a7b80fc4fc33f083bd70eb85c5cbeff5a65208.webp",
+      "sha256": "bbd455ebf9900be0767a9eccc3a7b80fc4fc33f083bd70eb85c5cbeff5a65208",
+      "bytes": 282242
+    },
+    "text": {
+      "url": "assets/aba944aaa1c34663528ecc8ace58b2f3825ae7da77bd161e23d1fdb16332c15a.png",
+      "sha256": "aba944aaa1c34663528ecc8ace58b2f3825ae7da77bd161e23d1fdb16332c15a",
+      "bytes": 42829
+    },
+    "lineart": {
+      "url": "assets/00100ece67b9d11a6a888cb5b9fea6a97a3b61bcb811255fb9c8d035003e3b54.webp",
+      "sha256": "00100ece67b9d11a6a888cb5b9fea6a97a3b61bcb811255fb9c8d035003e3b54",
+      "bytes": 56514
+    }
+  },
+  "parameters": {
+    "foil": 0.55,
+    "subjectDepth": 0.2,
+    "backgroundDepth": -0.16
+  },
+  "source": {
+    "work": "凡人修仙传",
+    "episode": 136,
+    "chapter": "外海风云12",
+    "url": "https://www.bilibili.com/bangumi/play/ep1231544",
+    "note": "根据用户截图分层修复；卡名、副标题为用户指定。"
+  },
+  "revision": "153e99ecad66c7e0"
+}

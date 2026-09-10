@@ -2,22 +2,49 @@
   "schemaVersion": 1,
   "items": [
     {
+      "id": "tiannan-001",
+      "title": "别天南",
+      "subtitle": "此去山海，自有归途",
+      "aspect": 1.7777777777777777,
+      "revision": "1b7a4356d3f5c403",
+      "manifest": "wallpapers/tiannan-001/1b7a4356d3f5c403/manifest.json",
+      "poster": "assets/f9422201acb8722630106f330c22c8c0617ae5c844617605e5d0e5b8cd46e9d3.webp"
+    },
+    {
+      "id": "ziling-001",
+      "title": "烟火人间",
+      "subtitle": "韩大哥，那一年的烟花最好看",
+      "aspect": 1.7777777777777777,
+      "revision": "8d2603985db129ae",
+      "manifest": "wallpapers/ziling-001/8d2603985db129ae/manifest.json",
+      "poster": "assets/fae010294f662504c79c390e62f5221ceb14ff7a986d4b70d2aec70e7f0ad31c.webp"
+    },
+    {
+      "id": "yuanyao-001",
+      "title": "元瑶 · 护道还魂",
+      "subtitle": "你只管做你想做的",
+      "aspect": 1.7777777777777777,
+      "revision": "153e99ecad66c7e0",
+      "manifest": "wallpapers/yuanyao-001/153e99ecad66c7e0/manifest.json",
+      "poster": "assets/bbd455ebf9900be0767a9eccc3a7b80fc4fc33f083bd70eb85c5cbeff5a65208.webp"
+    },
+    {
+      "id": "nangong-001",
+      "title": "月满相逢",
+      "subtitle": "千山赴约，只为与你相望",
+      "aspect": 1.7777777777777777,
+      "revision": "8fd8c39acb65d672",
+      "manifest": "wallpapers/nangong-001/8fd8c39acb65d672/manifest.json",
+      "poster": "assets/1a8aef9eac23b5be6f2afb45672e0d59bd44b4f457c9998796e2ed213d6addd0.webp"
+    },
+    {
       "id": "koi-001",
       "title": "锦鲤",
       "subtitle": "水墨典藏 · 传说",
       "aspect": 0.68,
-      "revision": "2cf96b45df2e66fc",
-      "manifest": "wallpapers/koi-001/2cf96b45df2e66fc/manifest.json",
+      "revision": "68b88b6187348eee",
+      "manifest": "wallpapers/koi-001/68b88b6187348eee/manifest.json",
       "poster": "assets/79ab8d16c284bf1bceae6c7610ceb19187aac44370d4d862fdf25708804c7ac5.png"
-    },
-    {
-      "id": "yuanyao-001",
-      "title": "元瑶",
-      "subtitle": "你只管做你想做的",
-      "aspect": 1.7777777777777777,
-      "revision": "d21486edfb53778e",
-      "manifest": "wallpapers/yuanyao-001/d21486edfb53778e/manifest.json",
-      "poster": "assets/bbd455ebf9900be0767a9eccc3a7b80fc4fc33f083bd70eb85c5cbeff5a65208.webp"
     }
   ]
 }

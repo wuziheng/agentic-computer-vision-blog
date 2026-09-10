@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "ziling-001",
+  "title": "烟火人间",
+  "subtitle": "韩大哥，那一年的烟花最好看",
+  "effect": "fireworks",
+  "motion": "inward",
+  "aspect": 1.7777777777777777,
+  "assets": {
+    "subject": {
+      "url": "assets/62a5d181b5228e9bab591245b06666e17077c547c675ffec746ec24670848060.webp",
+      "sha256": "62a5d181b5228e9bab591245b06666e17077c547c675ffec746ec24670848060",
+      "bytes": 79800
+    },
+    "background": {
+      "url": "assets/fae010294f662504c79c390e62f5221ceb14ff7a986d4b70d2aec70e7f0ad31c.webp",
+      "sha256": "fae010294f662504c79c390e62f5221ceb14ff7a986d4b70d2aec70e7f0ad31c",
+      "bytes": 357216
+    },
+    "text": {
+      "url": "assets/7e669959fa75bd018b0318ff8d7f5ae63da1c825d921ed7ad893d490e95a6fc5.webp",
+      "sha256": "7e669959fa75bd018b0318ff8d7f5ae63da1c825d921ed7ad893d490e95a6fc5",
+      "bytes": 18998
+    },
+    "lineart": {
+      "url": "assets/8bc5434f632032531c706d3fd50af41d6d1dfd6f8684e480f6cad978497a33a5.webp",
+      "sha256": "8bc5434f632032531c706d3fd50af41d6d1dfd6f8684e480f6cad978497a33a5",
+      "bytes": 495194
+    }
+  },
+  "parameters": {
+    "foil": 0.8,
+    "subjectDepth": 0.18,
+    "backgroundDepth": -0.13
+  },
+  "source": {
+    "work": "凡人修仙传",
+    "url": "https://www.bilibili.com/opus/1081296121740918808",
+    "note": "参考 AsciiC《紫灵的故事（E136-E146）》中 E146-7 的动画截图。人物及背景经 AI 分层修复；天空部分烟花改为程序动画。"
+  },
+  "revision": "8d2603985db129ae"
+}

@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "koi-001",
+  "title": "锦鲤",
+  "subtitle": "水墨典藏 · 传说",
+  "effect": "foil",
+  "motion": "none",
+  "aspect": 0.68,
+  "assets": {
+    "subject": {
+      "url": "assets/bbfe09711a4b56cb643086b6f337f919f6d8b325eeef06991914ef20a8eae02b.png",
+      "sha256": "bbfe09711a4b56cb643086b6f337f919f6d8b325eeef06991914ef20a8eae02b",
+      "bytes": 1951748
+    },
+    "background": {
+      "url": "assets/79ab8d16c284bf1bceae6c7610ceb19187aac44370d4d862fdf25708804c7ac5.png",
+      "sha256": "79ab8d16c284bf1bceae6c7610ceb19187aac44370d4d862fdf25708804c7ac5",
+      "bytes": 2573610
+    },
+    "text": {
+      "url": "assets/8a5f041141bb83fe94ebf111e6d938a833987bd575867dda9f61d2fd507184cf.png",
+      "sha256": "8a5f041141bb83fe94ebf111e6d938a833987bd575867dda9f61d2fd507184cf",
+      "bytes": 75767
+    },
+    "lineart": {
+      "url": "assets/f1c23ec999cada4589c64411fafa1ce9f67acd55964a0210ffc079a662cb629a.png",
+      "sha256": "f1c23ec999cada4589c64411fafa1ce9f67acd55964a0210ffc079a662cb629a",
+      "bytes": 1357613
+    }
+  },
+  "parameters": {
+    "foil": 0.65,
+    "subjectDepth": 0.4,
+    "backgroundDepth": -0.25
+  },
+  "source": {
+    "note": "个人制作的水墨锦鲤示例"
+  },
+  "revision": "68b88b6187348eee"
+}
