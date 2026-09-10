@@ -1,0 +1,1 @@
+{"name":"yuanyao-card-studio","private":true,"type":"module","scripts":{"build":"esbuild src/app.js --bundle --minify --format=esm --outfile=../cards/yuanyao/app.bundle.js","test":"node --test test/*.test.mjs"},"dependencies":{"three":"0.180.0"},"devDependencies":{"esbuild":"0.25.9"}}
