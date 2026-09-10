@@ -5,7 +5,7 @@ import {makeSpin,sampleSpin,clipTiming,FRONT} from '../src/spin.mjs';
 const front=new Quaternion().setFromEuler(new Euler(FRONT.x,FRONT.y,0));
 const pose=(x=0,y=0,z=0)=>({quaternion:new Quaternion().setFromEuler(new Euler(x,y,z)).toArray(),position:[0,0,0],scale:1});
 const q=frame=>new Quaternion().fromArray(frame.quaternion);
-test('coin motion starts at the current pose and settles smoothly on the front',()=>{
+test('centred spin starts at the current pose and settles smoothly on the front',()=>{
  for(const initial of [pose(),pose(.19,Math.PI,.2),{...pose(.7,1.3,-2),position:[.2,-.1,0],scale:.6}]){
   const spin=makeSpin(initial,8,false,.37);
   assert.ok(q(sampleSpin(spin,0)).angleTo(new Quaternion().fromArray(initial.quaternion))<1e-7);
@@ -14,12 +14,17 @@ test('coin motion starts at the current pose and settles smoothly on the front',
   assert.ok(q(sampleSpin(spin,7.999)).angleTo(q(end))<1e-6);
  }
 });
-test('precession changes both tilt axes and seed varies the impulse without frame jitter',()=>{
+test('axle stays near vertical while seed varies the impulse without frame jitter',()=>{
  const a=makeSpin(pose(),8,false,.12),b=makeSpin(pose(),8,false,.78);
  assert.deepEqual(sampleSpin(a,3.2),sampleSpin(a,3.2));assert.notDeepEqual(sampleSpin(a,3.2).quaternion,sampleSpin(b,3.2).quaternion);
  const normals=[.15,.3,.48,.6].map(p=>new Vector3(0,0,1).applyQuaternion(q(sampleSpin(a,p*8))));
  assert.ok(Math.max(...normals.map(n=>n.x))-Math.min(...normals.map(n=>n.x))>.4);
- assert.ok(Math.max(...normals.map(n=>n.y))-Math.min(...normals.map(n=>n.y))>.4);
+ assert.ok(Math.max(...normals.map(n=>n.y))-Math.min(...normals.map(n=>n.y))>.025);
+ for(let t=0;t<=8;t+=.01){
+  const frame=sampleSpin(a,t),up=new Vector3(0,1,0).applyQuaternion(q(frame));
+  assert.ok(up.angleTo(new Vector3(0,1,0))<.20,'card tilts too far away from its centre axle');
+  assert.deepEqual(frame.position,[0,0,0],'rotation must not orbit the stage');
+ }
  assert.deepEqual(sampleSpin(a,100),sampleSpin(a,8));
 });
 test('card corners stay in the default stage throughout launch, spin and settling',()=>{
