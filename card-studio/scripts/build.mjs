@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 const result=await build({entryPoints:['src/app.js'],bundle:true,minify:true,format:'esm',write:false});
 const code=result.outputFiles[0].contents;
 const digest=data=>createHash('sha256').update(data).digest('hex').slice(0,12);
-for(const id of ['tiannan','ziling','yuanyao','nangong']){
+for(const id of ['ziling','yuanyao','nangong']){
  const root='../cards/'+id;
  await writeFile(root+'/app.bundle.js',code);
  let page=await readFile(root+'/index.html','utf8');
@@ -12,4 +12,4 @@ for(const id of ['tiannan','ziling','yuanyao','nangong']){
  page=page.replace(/style\.css(?:\?[^\"]*)?/g,'style.css?v='+digest(await readFile(root+'/style.css')));
  await writeFile(root+'/index.html',page);
 }
-console.log('Built all four scene viewers.');
+console.log('Built all three scene viewers.');

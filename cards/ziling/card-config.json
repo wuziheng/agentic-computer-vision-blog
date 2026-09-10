@@ -41,7 +41,20 @@
     "background": "./assets/background.webp",
     "text": "./assets/text.webp",
     "lineart": "./assets/lineart.webp",
-    "model": "./assets/card.glb"
+    "model": "./assets/card.glb",
+    "environment": "./assets/environment.webp"
   },
-  "assetVersion": "c20c0a15cd51"
+  "assetVersion": "c20c0a15cd51",
+  "environmentAspect": 0.9080547112462006,
+  "composition": {
+    "inner": {
+      "width": 1.8,
+      "focus": 0.51
+    },
+    "cover": {
+      "width": 2.1,
+      "focus": 0.51
+    }
+  },
+  "wallpaperPoster": "./assets/poster.webp"
 }

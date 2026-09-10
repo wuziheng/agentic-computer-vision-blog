@@ -33,8 +33,22 @@
     "background": "./assets/background.webp",
     "text": "./assets/text.png",
     "lineart": "./assets/lineart.webp",
-    "model": "./assets/card.glb"
+    "model": "./assets/card.glb",
+    "environment": "./assets/environment.webp",
+    "repair": "./assets/hair-repair.webp"
   },
   "assetVersion": "aba944aaa1c3",
-  "motion": "right"
+  "motion": "right",
+  "environmentAspect": 0.9080547112462006,
+  "composition": {
+    "inner": {
+      "width": 1.5,
+      "focus": 0.6
+    },
+    "cover": {
+      "width": 2.0,
+      "focus": 0.69
+    }
+  },
+  "wallpaperPoster": "./assets/poster.webp"
 }
