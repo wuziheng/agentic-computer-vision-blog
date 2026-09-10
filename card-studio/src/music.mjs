@@ -19,7 +19,7 @@ export function createPerformance({pose, begin, finish}) {
     const timing=clipTiming($('clip-start').value,$('clip-duration').value,audio.duration);
     $('clip-start').value=timing.start;$('clip-duration').value=timing.duration;
     const current=pose();
-    run={...makeSpin(current.x,current.y,timing.duration,matchMedia('(prefers-reduced-motion: reduce)').matches),start:timing.start};
+    run={...makeSpin(current,timing.duration,matchMedia('(prefers-reduced-motion: reduce)').matches),start:timing.start};
     frozen=false;phase='';begin();buttons();say('正在准备配乐…');
     try {
       audio.currentTime=timing.start;

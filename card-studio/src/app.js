@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import {createPerformance} from './music.mjs';
-import {wrapAngle} from './spin.mjs';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
@@ -11,7 +10,8 @@ const stage=document.querySelector('#stage'), loading=document.querySelector('#l
 const $=id=>document.getElementById(id);
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let renderer,composer,root,face,uniforms,config,auto=false,flipped=false,dragging=false;
-let targetX=0.015,targetY=-0.08,targetZoom=1,rotationX=targetX,rotationY=targetY;
+let targetX=0.015,targetY=-0.08,targetZoom=1;
+const restingQuaternion=new THREE.Quaternion(),restingEuler=new THREE.Euler(),origin=new THREE.Vector3(),unitScale=new THREE.Vector3(1,1,1);
 let last={x:0,y:0},lastTime=0,elapsed=0,performance=null,down=null;
 const scene=new THREE.Scene();
 const camera=new THREE.OrthographicCamera(-5,5,5.65,-5.65,.1,100); camera.position.set(0,0,20); camera.lookAt(0,0,0);
@@ -91,13 +91,13 @@ async function init(){
  const gltf=await new GLTFLoader().loadAsync(config.assets.model);root=new THREE.Group();root.add(gltf.scene);scene.add(root);
  gltf.scene.traverse(ob=>{if(!ob.isMesh)return;const role=ob.material?.name;if(role==='web_front'){ob.material=frontMat;face=ob;}else if(role==='web_back')ob.material=backMat;else if(role==='web_gold')ob.material=goldMat;else if(role==='web_text')ob.visible=false;else ob.material=edgeMat;});
  if(!face)throw Error('Blender 模型中缺少 web_front 材质，请重新导出模型。');
- performance=createPerformance({pose:()=>({x:rotationX,y:rotationY}),begin:()=>{setAuto(false);dragging=false;flipped=false;$('flip').innerHTML='翻看背面 <span>↻</span>';$('view-label').textContent='IN MOTION · 流转';},finish:()=>{$('view-label').textContent='FRONT · 此刻定格';}});
+ performance=createPerformance({pose:()=>({quaternion:root.quaternion.toArray(),position:root.position.toArray(),scale:root.scale.x}),begin:()=>{targetZoom=1;resize();setAuto(false);dragging=false;flipped=false;$('flip').innerHTML='翻看背面 <span>↻</span>';$('view-label').textContent='IN MOTION · 流转';},finish:()=>{$('view-label').textContent='FRONT · 此刻定格';}});
  setupControls();new ResizeObserver(resize).observe(stage);resize();loading.remove();
  window.__holo={ready:true,config,renderer,root,uniforms,reset,modelSource:config.assets.model};renderer.setAnimationLoop(animate);
 }
 function resize(){const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h||!renderer)return;const aspect=w/h;const halfH=Math.max(3.35,5.55/aspect)/targetZoom;camera.left=-halfH*aspect;camera.right=halfH*aspect;camera.top=halfH;camera.bottom=-halfH;camera.updateProjectionMatrix();renderer.setSize(w,h);composer.setSize(w,h);}
 function setAuto(value){auto=value;$('auto').setAttribute('aria-pressed',String(auto));$('auto').innerHTML=auto?'<span>Ⅱ</span> 暂停赏卡':'<span>▷</span> 自动赏卡';}
-function interrupt(){if(!performance?.active)return;performance.cancel();rotationY=wrapAngle(rotationY);targetY=rotationY;targetX=rotationX;flipped=Math.cos(rotationY)<0;}
+function interrupt(){if(!performance?.active)return;performance.cancel();flipped=new THREE.Vector3(0,0,1).applyQuaternion(root.quaternion).z<0;targetX=.015;targetY=flipped?Math.PI:-.08;}
 function reset(){interrupt();targetX=.015;targetY=-.08;targetZoom=1;$('flip').innerHTML='翻看背面 <span>↻</span>';flipped=false;setAuto(false);$('view-label').textContent='FRONT · 正面';resize();}
 function flip(){interrupt();flipped=!flipped;setAuto(false);targetY=flipped?Math.PI:0;targetX=0;$('flip').innerHTML=flipped?'回到正面 <span>↻</span>':'翻看背面 <span>↻</span>';$('view-label').textContent=flipped?'BACK · 背面':'FRONT · 正面';}
 function setupControls(){
@@ -123,12 +123,12 @@ function animate(now){
  const dt=Math.min((now-lastTime)/1000,.1)||0;lastTime=now;
  if(!document.hidden&&!performance?.frozen)elapsed+=dt;
  const frame=performance?.frame();
- if(frame){rotationX=frame.x;rotationY=frame.y;targetX=rotationX;targetY=rotationY;}
+ if(frame){root.quaternion.fromArray(frame.quaternion);root.position.fromArray(frame.position);root.scale.setScalar(frame.scale);}
  else {
   if(auto){targetY=Math.sin(elapsed*.45)*.24;targetX=Math.sin(elapsed*.6)*.075;}
-  const ease=reduced?1:1-Math.exp(-dt*8);rotationX+=(targetX-rotationX)*ease;rotationY+=(targetY-rotationY)*ease;
+  const ease=reduced?1:1-Math.exp(-dt*8);restingQuaternion.setFromEuler(restingEuler.set(targetX,targetY,0));root.quaternion.slerp(restingQuaternion,ease);root.position.lerp(origin,ease);root.scale.lerp(unitScale,ease);
  }
- root.rotation.set(rotationX,rotationY,0);root.updateMatrixWorld(true);
+ root.updateMatrixWorld(true);
  uniforms.uView.value.copy(camera.position).applyMatrix4(new THREE.Matrix4().copy(root.matrixWorld).invert()).normalize();
  if(frame)uniforms.uTime.value=frame.time;
  else if(!performance?.frozen)uniforms.uTime.value=reduced&&!auto?0:elapsed;
