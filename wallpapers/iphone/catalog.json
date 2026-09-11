@@ -1,6 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-11T06:09:56.676Z",
+  "renderRevision": "motion-v2",
+  "updatedAt": "2026-09-11T06:42:01.344Z",
   "items": [
     {
       "id": "ziling-001",
@@ -10,48 +11,95 @@
       "revision": "77f3be593a75b580",
       "manifest": "wallpapers/ziling-001/77f3be593a75b580/manifest.json",
       "poster": "assets/84f68ab83a6e38a23217ce2e9d4dab8bd66d0c75ab6cfc12d24654b573f6fabe.webp",
+      "motionDescription": "镜头向画面深处推进 · 运镜增强",
       "name": "紫灵",
       "variants": [
         {
-          "id": "full",
-          "label": "全面屏 · 高清",
+          "id": "iphone17pro",
+          "label": "iPhone 17 Pro",
+          "renderRevision": "motion-v2",
+          "width": 1206,
+          "height": 2622,
+          "photo": {
+            "url": "ziling-001-iphone17pro-motion-v2/photo.jpg",
+            "bytes": 739111,
+            "sha256": "31a102a842ae83ce20c8c0b6b869716b3574dcdd8797eaf4b8b95b87ca2027ba"
+          },
+          "video": {
+            "url": "ziling-001-iphone17pro-motion-v2/preview.mp4",
+            "bytes": 4908592,
+            "sha256": "373c22ec8dc319c57bcd7ff15b37050de6ae741a027e60e09fa35d617339be97"
+          },
+          "live": {
+            "url": "ziling-001-iphone17pro-motion-v2/live-photo.zip",
+            "bytes": 5646741,
+            "sha256": "edc960d370f56c2c2e01c3f69508c3802beab2a173988d9afcf14512554d09f6"
+          }
+        },
+        {
+          "id": "iphone17promax",
+          "label": "iPhone 17 Pro Max",
+          "renderRevision": "motion-v2",
           "width": 1320,
           "height": 2868,
           "photo": {
-            "url": "ziling-001-full/photo.jpg",
-            "bytes": 847017,
-            "sha256": "77bc54c946e569fd732e8d6346cfe49bb7b1846d3f8195f0a295af229d54c102"
+            "url": "ziling-001-full-motion-v2/photo.jpg",
+            "bytes": 839568,
+            "sha256": "c201f99f9de0948626cc6b0058c15f0b3301e63d2fa1e256140feb79016b1c0b"
           },
           "video": {
-            "url": "ziling-001-full/preview.mp4",
-            "bytes": 4992548,
-            "sha256": "1827a9a99e9f8f3971af3699ea99647dfbe152a7f415bc3ea1f9884033b279d4"
+            "url": "ziling-001-full-motion-v2/preview.mp4",
+            "bytes": 4972683,
+            "sha256": "c50c8c30b341af74ebd7c5a63b6ecc11163b8326508689ae3dc742a348d59fee"
           },
           "live": {
-            "url": "ziling-001-full/live-photo.zip",
-            "bytes": 5838133,
-            "sha256": "4f760449d834d3937c8d3494a4d492ece69f48b80f22e5c95a439b01d61ee793"
+            "url": "ziling-001-full-motion-v2/live-photo.zip",
+            "bytes": 5810981,
+            "sha256": "96373cdfa93a0fd6fcebf78b9991b9d891d507206fa8ba94a9ff9aa52b8fce11"
+          }
+        },
+        {
+          "id": "iphoneair",
+          "label": "iPhone Air",
+          "renderRevision": "motion-v2",
+          "width": 1260,
+          "height": 2736,
+          "photo": {
+            "url": "ziling-001-iphoneair-motion-v2/photo.jpg",
+            "bytes": 783639,
+            "sha256": "60dd205095b13c2254b61a30c017c1cb0c9d8b3945139b6893f8bc259f645286"
+          },
+          "video": {
+            "url": "ziling-001-iphoneair-motion-v2/preview.mp4",
+            "bytes": 4929232,
+            "sha256": "0e8fad2cfdda61982319512d0cd4652c976d79437dc42dec24ae3e7c9baacf71"
+          },
+          "live": {
+            "url": "ziling-001-iphoneair-motion-v2/live-photo.zip",
+            "bytes": 5711640,
+            "sha256": "058fd970a728b170800cc58d77639efeec9ad66bc4e5c2393f6433b1d7aefdc4"
           }
         },
         {
           "id": "classic",
           "label": "16:9 · 经典屏",
+          "renderRevision": "motion-v2",
           "width": 750,
           "height": 1334,
           "photo": {
-            "url": "ziling-001-classic/photo.jpg",
-            "bytes": 335665,
-            "sha256": "7cdd25daa535919cb851e1de48c6b990ed91b86b978f53286725515f590643c9"
+            "url": "ziling-001-classic-motion-v2/photo.jpg",
+            "bytes": 331024,
+            "sha256": "38ca50f09510cb6afb2801c4ce51da95d73c528daf4ee0f33999fc68bca02f77"
           },
           "video": {
-            "url": "ziling-001-classic/preview.mp4",
-            "bytes": 4780966,
-            "sha256": "49f3a31a8b1d95d2be14f66e81edc8ed0ed6e3cb6bd2f360adf416c6b3e858d8"
+            "url": "ziling-001-classic-motion-v2/preview.mp4",
+            "bytes": 4760079,
+            "sha256": "f0015ab8cb4637e655daab456e34a0fb0a43121c5e6d0f5a2cac4565e3d3c1a7"
           },
           "live": {
-            "url": "ziling-001-classic/live-photo.zip",
-            "bytes": 5116584,
-            "sha256": "4df0c349f3da6dde913f5ec970124a334ef9b19e23456aca2e1873892f0ee158"
+            "url": "ziling-001-classic-motion-v2/live-photo.zip",
+            "bytes": 5090954,
+            "sha256": "0dc75ad0df3ae654f1d0f6a3fbf15bf41827414faa208b52092a2237ae531a63"
           }
         }
       ]
@@ -64,48 +112,95 @@
       "revision": "12e39fc0303ccfd5",
       "manifest": "wallpapers/yuanyao-001/12e39fc0303ccfd5/manifest.json",
       "poster": "assets/48c14a4c5f3c42b85352e0a00ba14d17ba2cf68e56974fe41eab88a67a099eb7.webp",
+      "motionDescription": "镜头从左向右移动 · 运镜增强",
       "name": "元瑶",
       "variants": [
         {
-          "id": "full",
-          "label": "全面屏 · 高清",
+          "id": "iphone17pro",
+          "label": "iPhone 17 Pro",
+          "renderRevision": "motion-v2",
+          "width": 1206,
+          "height": 2622,
+          "photo": {
+            "url": "yuanyao-001-iphone17pro-motion-v2/photo.jpg",
+            "bytes": 900863,
+            "sha256": "657db0bb96bb73e6004cdb70948ff0f77abebd9426ecb2b3a9ea5b69ef31b694"
+          },
+          "video": {
+            "url": "yuanyao-001-iphone17pro-motion-v2/preview.mp4",
+            "bytes": 5104322,
+            "sha256": "5812c759bb49365f1363ee3e28f723a8a8deb04eeadc392caccbde01fb3bf0e8"
+          },
+          "live": {
+            "url": "yuanyao-001-iphone17pro-motion-v2/live-photo.zip",
+            "bytes": 6004557,
+            "sha256": "1b753393c95a831467c20d8cdcf1ddc5fc2df83ea080cf47d6ae2a994e8d21e1"
+          }
+        },
+        {
+          "id": "iphone17promax",
+          "label": "iPhone 17 Pro Max",
+          "renderRevision": "motion-v2",
           "width": 1320,
           "height": 2868,
           "photo": {
-            "url": "yuanyao-001-full/photo.jpg",
-            "bytes": 1034044,
-            "sha256": "c1a8e6ea5c83cf7bffd02b6379371bce5eac7d00b442233c91917cce2768bc13"
+            "url": "yuanyao-001-full-motion-v2/photo.jpg",
+            "bytes": 1025113,
+            "sha256": "a8c2d1ae8cf737a66741bd2866c94412ec1d6ef9f713cce174a50cb4f13ec5aa"
           },
           "video": {
-            "url": "yuanyao-001-full/preview.mp4",
-            "bytes": 5405693,
-            "sha256": "8dbcf096eb9e946313a64f56f3302fec65d53fca7d16f640ce11827cd340ac36"
+            "url": "yuanyao-001-full-motion-v2/preview.mp4",
+            "bytes": 5187570,
+            "sha256": "bd02b3bb951dcb0f6177d803c701f5ab7311bc8af3cae077721c669004469fa5"
           },
           "live": {
-            "url": "yuanyao-001-full/live-photo.zip",
-            "bytes": 6438904,
-            "sha256": "a9b65b16e3a3e2950a315b3f57a4b32645360c1f62d4531c930fb33c88bb5332"
+            "url": "yuanyao-001-full-motion-v2/live-photo.zip",
+            "bytes": 6211792,
+            "sha256": "9692a29a1fdeadcffc0e726c4ba21163a9ef00fd27db86df144afc591218b9a7"
+          }
+        },
+        {
+          "id": "iphoneair",
+          "label": "iPhone Air",
+          "renderRevision": "motion-v2",
+          "width": 1260,
+          "height": 2736,
+          "photo": {
+            "url": "yuanyao-001-iphoneair-motion-v2/photo.jpg",
+            "bytes": 955334,
+            "sha256": "559aceccf37274025ed8021ae5d0d64374de3573f8443378ff78390e1bde47e1"
+          },
+          "video": {
+            "url": "yuanyao-001-iphoneair-motion-v2/preview.mp4",
+            "bytes": 5156312,
+            "sha256": "e607c4f245461b4ffaf39cc93569d58a50ba5d25b7c4c03e23e58ea7af283868"
+          },
+          "live": {
+            "url": "yuanyao-001-iphoneair-motion-v2/live-photo.zip",
+            "bytes": 6110876,
+            "sha256": "9b4236715591a3958e5b8ef4ef37431a43777c96c820ba848adee1aa7b79dcf7"
           }
         },
         {
           "id": "classic",
           "label": "16:9 · 经典屏",
+          "renderRevision": "motion-v2",
           "width": 750,
           "height": 1334,
           "photo": {
-            "url": "yuanyao-001-classic/photo.jpg",
-            "bytes": 416883,
-            "sha256": "3de5d81a16bd0e46ca5b495f9745b369abf0ae191ff2edd04036bf484f6d5bff"
+            "url": "yuanyao-001-classic-motion-v2/photo.jpg",
+            "bytes": 412704,
+            "sha256": "77b238636ab21d2068881edabf6a57c39a7ac8f43d673a4d3e977646abfecf1f"
           },
           "video": {
-            "url": "yuanyao-001-classic/preview.mp4",
-            "bytes": 5011383,
-            "sha256": "12c55fb0934c653e64f38dad8f00a0ae93e27066ad4ec77760cf5286b36ceff6"
+            "url": "yuanyao-001-classic-motion-v2/preview.mp4",
+            "bytes": 4829446,
+            "sha256": "17f5bf24abd96a7c60b5348b53e8c8f5aed75e9d14d851a6d3f41b3e32349576"
           },
           "live": {
-            "url": "yuanyao-001-classic/live-photo.zip",
-            "bytes": 5428144,
-            "sha256": "c1788b52d57bf9a36d7446f79f75462bea34ac8b7c3a210354d02b0645aa273d"
+            "url": "yuanyao-001-classic-motion-v2/live-photo.zip",
+            "bytes": 5242003,
+            "sha256": "804a9de3603aa72e93e018821dd3d73524fd502cf3006cbe1f26d1f4226b777d"
           }
         }
       ]
@@ -118,48 +213,95 @@
       "revision": "b09819610f7b227f",
       "manifest": "wallpapers/nangong-001/b09819610f7b227f/manifest.json",
       "poster": "assets/5ef5c48a12066efa16cfcfc99f75661aa1d6680ca80abaeff991edde23b870cd.webp",
+      "motionDescription": "镜头向外拉远 · 运镜增强",
       "name": "南宫婉",
       "variants": [
         {
-          "id": "full",
-          "label": "全面屏 · 高清",
+          "id": "iphone17pro",
+          "label": "iPhone 17 Pro",
+          "renderRevision": "motion-v2",
+          "width": 1206,
+          "height": 2622,
+          "photo": {
+            "url": "nangong-001-iphone17pro-motion-v2/photo.jpg",
+            "bytes": 897017,
+            "sha256": "6f95514c361ea4ef577353c01151698334431edcf7487f84ff94a542d2415009"
+          },
+          "video": {
+            "url": "nangong-001-iphone17pro-motion-v2/preview.mp4",
+            "bytes": 5005726,
+            "sha256": "9b21a4ede3383fc2ec9a3d0a077cade501240b3d5fd45fc9109fb4e1b9bc3982"
+          },
+          "live": {
+            "url": "nangong-001-iphone17pro-motion-v2/live-photo.zip",
+            "bytes": 5902606,
+            "sha256": "61a1e00b0ed0fe3d73d66ca2e9527916e4639663e37bab7248f5d225f35c168f"
+          }
+        },
+        {
+          "id": "iphone17promax",
+          "label": "iPhone 17 Pro Max",
+          "renderRevision": "motion-v2",
           "width": 1320,
           "height": 2868,
           "photo": {
-            "url": "nangong-001-full/photo.jpg",
-            "bytes": 1010397,
-            "sha256": "7e3549849a2ce9392c9926f4d664061c9fea2ec75e021ba894dbf5531587741e"
+            "url": "nangong-001-full-motion-v2/photo.jpg",
+            "bytes": 1020561,
+            "sha256": "850993164e33713879582da82a7bd54078db78b44781a8fcdbe9201564286901"
           },
           "video": {
-            "url": "nangong-001-full/preview.mp4",
-            "bytes": 5020032,
-            "sha256": "85017669093f234d92452d17836a06a448673973a6b7a633ea80daa8ecdbd538"
+            "url": "nangong-001-full-motion-v2/preview.mp4",
+            "bytes": 5082317,
+            "sha256": "c561d47bc05c0a2e4cc725fcc69b7bd74ce4ed4c91b3f3b109a988b5f32a0bdd"
           },
           "live": {
-            "url": "nangong-001-full/live-photo.zip",
-            "bytes": 6030152,
-            "sha256": "8a2f23eb875eaf759e5b8b7565c16c3851f1a1b0c1cb89311f0b63280a002aa2"
+            "url": "nangong-001-full-motion-v2/live-photo.zip",
+            "bytes": 6102663,
+            "sha256": "be68ad402d66e4ad3751f7caf05ae9c88a3f00806f398945b36a1ad9dd109ce8"
+          }
+        },
+        {
+          "id": "iphoneair",
+          "label": "iPhone Air",
+          "renderRevision": "motion-v2",
+          "width": 1260,
+          "height": 2736,
+          "photo": {
+            "url": "nangong-001-iphoneair-motion-v2/photo.jpg",
+            "bytes": 950061,
+            "sha256": "b115c7929c62faaa8032a68de3fe4ba688dff68c132bba17896b41824c19de17"
+          },
+          "video": {
+            "url": "nangong-001-iphoneair-motion-v2/preview.mp4",
+            "bytes": 5016421,
+            "sha256": "6375e448e00f273b0f869bf839164d0beed214a32d17eb72bef3788b9449b06a"
+          },
+          "live": {
+            "url": "nangong-001-iphoneair-motion-v2/live-photo.zip",
+            "bytes": 5966373,
+            "sha256": "fe0e0fd96752bdf2ba13b5a152ad10aa34c4c278eda2034f73cc715e44411a8e"
           }
         },
         {
           "id": "classic",
           "label": "16:9 · 经典屏",
+          "renderRevision": "motion-v2",
           "width": 750,
           "height": 1334,
           "photo": {
-            "url": "nangong-001-classic/photo.jpg",
-            "bytes": 392480,
-            "sha256": "a854def13c2fcedd8805e41967081e00004277e85450dff60f9bb7453aeb8d63"
+            "url": "nangong-001-classic-motion-v2/photo.jpg",
+            "bytes": 395365,
+            "sha256": "a0089c775409a217022e3bc5e16ee859e716b29c35f8d846ab811d685af5caa3"
           },
           "video": {
-            "url": "nangong-001-classic/preview.mp4",
-            "bytes": 4838065,
-            "sha256": "b44776d0e66011c6f45083d7284d2d2a06ada72763cc16942bc0928ed4acc76e"
+            "url": "nangong-001-classic-motion-v2/preview.mp4",
+            "bytes": 4843700,
+            "sha256": "6852c53194187e58fd8bba41dc5972b05e6675b4c3584e02feb545de3c60f45e"
           },
           "live": {
-            "url": "nangong-001-classic/live-photo.zip",
-            "bytes": 5230541,
-            "sha256": "28c364a38646c5a1805545c653f2641178928ba8b37bd9dff5992e1a921505df"
+            "url": "nangong-001-classic-motion-v2/live-photo.zip",
+            "bytes": 5239062,
+            "sha256": "4de61900571a87fd607cbc6b3cc3da911b95267e1b15443eddfae233c8619828"
           }
         }
       ]
@@ -174,26 +316,72 @@
         "label": "Disney Parks Blog · 十周年官方照片",
         "note": "官方实拍照片基础上的 AI 竖屏扩图与动态改编，非官方壁纸。"
       },
+      "motionDescription": "城堡固定 · 烟花升空、绽放、垂落消散",
       "variants": [
         {
           "id": "iphone17pro",
           "label": "iPhone 17 Pro",
+          "renderRevision": "fireworks-v3",
           "width": 1206,
           "height": 2622,
           "photo": {
-            "url": "disney-10-iphone17pro/photo.jpg",
-            "bytes": 876771,
-            "sha256": "c2d0e2af333e73c7b49de14969fb6ceff9e4c47d6493daef76ebbfab70c6705f"
+            "url": "disney-10-iphone17pro-fireworks-v3/photo.jpg",
+            "bytes": 832442,
+            "sha256": "889056ad1a1b3489b9311026ccd2f3f56fb6bb48f3c238f1b050226c771be292"
           },
           "video": {
-            "url": "disney-10-iphone17pro/preview.mp4",
-            "bytes": 5174127,
-            "sha256": "e48d65c49d179de396e3107983cda3474bbb2ce011da849c2bb5348678ac762b"
+            "url": "disney-10-iphone17pro-fireworks-v3/preview.mp4",
+            "bytes": 4248565,
+            "sha256": "577c14208fd947d85ba998b9d4a4a2ef6a7ea6565d34288437122807cfc4836e"
           },
           "live": {
-            "url": "disney-10-iphone17pro/live-photo.zip",
-            "bytes": 6050034,
-            "sha256": "eab41d3a20ea474bbfe6881d580853e154df54713b5ca2222afeed0e1f884722"
+            "url": "disney-10-iphone17pro-fireworks-v3/live-photo.zip",
+            "bytes": 5080053,
+            "sha256": "15bdb8de6a1d01435105e9f7246c5bf7173dd356d83737d7f180fafe1268af87"
+          }
+        },
+        {
+          "id": "iphone17promax",
+          "label": "iPhone 17 Pro Max",
+          "renderRevision": "fireworks-v3",
+          "width": 1320,
+          "height": 2868,
+          "photo": {
+            "url": "disney-10-iphone17promax-fireworks-v3/photo.jpg",
+            "bytes": 953055,
+            "sha256": "e8a33a4f28470eaf605b0116c89919b50380fece0e0f55aede1e8ab72baf1df6"
+          },
+          "video": {
+            "url": "disney-10-iphone17promax-fireworks-v3/preview.mp4",
+            "bytes": 4472073,
+            "sha256": "c6672264e866af5ee3163af76ba5517139300dafb702b5b7857a9570fc188a02"
+          },
+          "live": {
+            "url": "disney-10-iphone17promax-fireworks-v3/live-photo.zip",
+            "bytes": 5424066,
+            "sha256": "5027cea4906c1b04f1a0cae9a9f7b48c3ef769950d02c06ce953a7bfb8c2c294"
+          }
+        },
+        {
+          "id": "iphoneair",
+          "label": "iPhone Air",
+          "renderRevision": "fireworks-v3",
+          "width": 1260,
+          "height": 2736,
+          "photo": {
+            "url": "disney-10-iphoneair-fireworks-v3/photo.jpg",
+            "bytes": 887149,
+            "sha256": "a40ad4068535f9bb315ccd138e6cb86260f840b302a453c6290d1bddd3a9dd61"
+          },
+          "video": {
+            "url": "disney-10-iphoneair-fireworks-v3/preview.mp4",
+            "bytes": 4379953,
+            "sha256": "7e66299c2e48fde44ecc657cccb376766cd2a9c0f61d854a8a48dfdec3fcd8a7"
+          },
+          "live": {
+            "url": "disney-10-iphoneair-fireworks-v3/live-photo.zip",
+            "bytes": 5265899,
+            "sha256": "bfea842d3a72a537d127ba8edf8b9b47b647f99715ecb917587fad4e3619b8f3"
           }
         }
       ]
@@ -206,28 +394,74 @@
       "source": {
         "url": "https://disneyparksblog.com/shdl/shanghai-disney-resort-10th-anniversary-celebration/",
         "label": "十周年灵感 · 原创幻梦版",
-        "note": "AI 原创城堡烟花与动态光影，非官方实拍或活动复刻。"
+        "note": "AI 原创城堡，保留底图烟花纹理，叠加升空、绽放与消散的烟花动画；非官方实拍或活动复刻。"
       },
+      "motionDescription": "城堡固定 · 烟花升空、绽放、垂落消散",
       "variants": [
         {
           "id": "iphone17pro",
           "label": "iPhone 17 Pro",
+          "renderRevision": "fireworks-v3",
           "width": 1206,
           "height": 2622,
           "photo": {
-            "url": "disney-dream-iphone17pro/photo.jpg",
-            "bytes": 1128242,
-            "sha256": "9a0a0d88da4efd3e858824e1e191c68b596c2c785d3326c378c657b52086b80a"
+            "url": "disney-dream-iphone17pro-fireworks-v3/photo.jpg",
+            "bytes": 1195767,
+            "sha256": "7f277860d1480de299edada081bcdb223c82b6eaf3df24b37892c6e372a1d86e"
           },
           "video": {
-            "url": "disney-dream-iphone17pro/preview.mp4",
-            "bytes": 5329453,
-            "sha256": "7e59e224b3b06773e30310a108fe61de41f8ee98592f4eff43587c2ce156b43c"
+            "url": "disney-dream-iphone17pro-fireworks-v3/preview.mp4",
+            "bytes": 5248662,
+            "sha256": "df61f0e52ff5dddb16105579e67e4d07d027760badc1b467237c8571050e0625"
           },
           "live": {
-            "url": "disney-dream-iphone17pro/live-photo.zip",
-            "bytes": 6456327,
-            "sha256": "45eae091393fa8b4c8243988281e77a60fb010239c84ae54827f24db19a2d29b"
+            "url": "disney-dream-iphone17pro-fireworks-v3/live-photo.zip",
+            "bytes": 6442903,
+            "sha256": "acb6a124e133c70db88e95ebfd4116e9852b96cc9b9c66d6c7e579fab0156cce"
+          }
+        },
+        {
+          "id": "iphone17promax",
+          "label": "iPhone 17 Pro Max",
+          "renderRevision": "fireworks-v3",
+          "width": 1320,
+          "height": 2868,
+          "photo": {
+            "url": "disney-dream-iphone17promax-fireworks-v3/photo.jpg",
+            "bytes": 1363235,
+            "sha256": "5a02e4679747d2dc141b4f1f25cf13b69d8e15f7594a748d7408cb5696527610"
+          },
+          "video": {
+            "url": "disney-dream-iphone17promax-fireworks-v3/preview.mp4",
+            "bytes": 5298195,
+            "sha256": "e2dc391f67956e81ded91493d4417403372e2cab4acc1ed958ca65473d1d3114"
+          },
+          "live": {
+            "url": "disney-dream-iphone17promax-fireworks-v3/live-photo.zip",
+            "bytes": 6659618,
+            "sha256": "c4649261b5a7aae63df71e868d8187f09428cf61188ff37ce4a29bdcb6bd8529"
+          }
+        },
+        {
+          "id": "iphoneair",
+          "label": "iPhone Air",
+          "renderRevision": "fireworks-v3",
+          "width": 1260,
+          "height": 2736,
+          "photo": {
+            "url": "disney-dream-iphoneair-fireworks-v3/photo.jpg",
+            "bytes": 1270621,
+            "sha256": "4361d9ae6d0a13136eb2bb98d938f4bea6410aaabfef6575f06a40ee3c0e762d"
+          },
+          "video": {
+            "url": "disney-dream-iphoneair-fireworks-v3/preview.mp4",
+            "bytes": 5284306,
+            "sha256": "c78378795587c4e78273c0eacc74f74c4d742205e7731dec838e8b131dbb791c"
+          },
+          "live": {
+            "url": "disney-dream-iphoneair-fireworks-v3/live-photo.zip",
+            "bytes": 6553399,
+            "sha256": "bb98f8c60031e2afd34a7ddf014c37b949f22b57ac4bca49efcae45799ee76db"
           }
         }
       ]

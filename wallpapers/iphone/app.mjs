@@ -1,8 +1,11 @@
+import {normalizeSize} from './presets.mjs';
 import {selectVariant,activeCloudLink,fileURL} from './model.mjs';
 const $=id=>document.getElementById(id),video=$('preview'),image=$('still'),params=new URLSearchParams(location.hash.slice(1));
 let catalog,current,variant,format=['photo','video','live'].includes(params.get('format'))?params.get('format'):'photo';
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-$('size').value=['full','classic','iphone17pro'].includes(params.get('size'))?params.get('size'):'auto';
+const initialSize=normalizeSize(params.get('size'));
+$('size').replaceChildren(...['auto','classic','iphone17pro','iphone17promax','iphoneair'].map(id=>new Option(id,id)));
+$('size').value=['classic','iphone17pro','iphone17promax','iphoneair'].includes(initialSize)?initialSize:'auto';
 const mb=n=>(n/1024/1024).toFixed(1)+' MB';
 function permalink(){const p=new URLSearchParams({scene:current.id,size:$('size').value,format});return location.origin+location.pathname+'#'+p;}
 function updateFormat(){
@@ -16,6 +19,7 @@ function refresh(){
  const chosen=$('size').value||params.get('size')||'auto';const options=[['auto','自动匹配屏幕比例'],...current.variants.map(v=>[v.id,v.label+' · '+v.width+' × '+v.height])];$('size').replaceChildren(...options.map(([value,label])=>new Option(label,value)));$('size').value=options.some(o=>o[0]===chosen)?chosen:'auto';
  const source=$('source-note');source.replaceChildren();source.hidden=!current.source;if(current.source){const link=document.createElement('a');link.textContent=current.source.label;link.href=current.source.url;link.target='_blank';link.rel='noopener';source.append(link,document.createElement('br'),document.createTextNode(current.source.note));}
  variant=selectVariant(current.variants,$('size').value,screen.width,screen.height);
+ $('motion-note').textContent=current.motionDescription||'';
  $('title').textContent=current.title;$('subtitle').textContent=current.subtitle;
  $('size-note').textContent=($('size').value==='auto'?'已按屏幕比例匹配：':'已选择：')+variant.label+'，'+variant.width+' × '+variant.height+'。系统设置墙纸时可微调裁切。';
  document.querySelector('.phone').style.setProperty('--ratio',variant.width+'/'+variant.height);
