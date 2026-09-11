@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#10151b"><meta name="description" content="紫灵、元瑶、南宫婉、迪士尼十周年：在线选片，预览动态光影，下载手机壁纸与 Live Photo 原件，无需安装 App。"><title>幻光壁纸 · 把这一刻带走</title><link rel="stylesheet" href="./style.css"></head>
+<body><header><a href="../../cards/" class="brand">幻光典藏 <span>LIGHT, WITH YOU.</span></a><a href="../android/">Android 壁纸 ↗</a></header>
+<main><section class="stage" aria-label="作品预览"><div class="halo"></div><div class="phone"><video id="preview" muted playsinline loop preload="metadata" aria-label="所选作品的动态光影预览"></video><img id="still" alt="所选作品的静态壁纸" hidden></div><div class="playbar"><span id="preview-note">三秒光影 · 含纪念文案</span><button id="play" disabled>播放光影 ▷</button></div></section>
+<section class="editor"><p class="eyebrow">IPHONE WALLPAPER COLLECTION</p><h1>把这一刻，<br>带在身边。</h1><p class="intro">烟花有约，故人相望。<br>选一幕心动的光影，留给每次亮屏。</p>
+<div class="section-label"><span>01 / 选择作品</span><span>五幕光影</span></div><nav id="scenes" aria-label="选择作品"></nav>
+<div class="selected-copy"><h2 id="title">正在加载作品…</h2><p id="subtitle"></p><p id="source-note" class="muted" hidden></p></div>
+<div class="section-label"><label for="size">02 / 屏幕比例</label></div><select id="size"><option value="auto">自动匹配屏幕比例</option><option value="full">全面屏 · 1320 × 2868</option><option value="classic">经典 16:9 · 750 × 1334</option></select><p id="size-note" class="muted"></p>
+<div class="section-label"><span>03 / 选择下载内容</span></div><div id="formats" class="formats" role="group" aria-label="下载格式"><button data-format="photo" aria-pressed="true"><strong>静态壁纸</strong><span>JPG · 可设置墙纸</span></button><button data-format="video" aria-pressed="false"><strong>动态光影</strong><span>MP4 · 三秒视频</span></button><button data-format="live" aria-pressed="false"><strong>Live Photo 原件</strong><span>ZIP · 配对文件</span></button></div>
+<p id="format-note" class="format-note">图片包含标题和副标题，不含预览时钟。</p><a id="download" class="primary" aria-disabled="true">正在准备下载链接…</a><div class="secondary"><button id="copy" disabled>复制当前选片链接 ↗</button><span id="file-size"></span></div><p id="status" role="status" class="muted"></p>
+<a id="icloud" class="primary" hidden target="_blank" rel="noopener">在 iCloud 中保存实况照片 ↗</a>
+<details><summary>下载后，怎样设置到 iPhone？</summary><p><b>静态壁纸：</b>下载后打开图片，长按保存或从分享菜单选择“存储图像”。然后进入“设置 → 墙纸 → 添加新墙纸 → 照片”。</p><p><b>动态光影：</b>MP4 可播放和保存为视频，不能直接设置为 iPhone 动态墙纸。</p><p><b>Live Photo 原件：</b>ZIP 内含配对的 JPG 与 MOV。普通 Safari 下载不会自动将它们合并为相册里的实况照片；这是原件下载，尚不是一键保存动态锁屏。</p><p>实况照片成功导入相册后，还需在系统墙纸中确认动态播放可用。iPhone 动态锁屏是在唤醒时播放，不能持续运行网页光影。</p></details>
+<p class="edition">网页下载版 · 无需安装 App<br>图像与光效预先生成，下载不依赖手机性能。</p></section></main>
+<footer><a href="../../cards/">返回场景典藏 ↗</a><span>凡人典藏 / 城堡烟花</span></footer>
+<script type="module" src="./app.mjs"></script></body></html>

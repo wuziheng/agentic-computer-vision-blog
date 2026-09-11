@@ -1,0 +1,236 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-11T06:09:56.676Z",
+  "items": [
+    {
+      "id": "ziling-001",
+      "title": "烟火人间",
+      "subtitle": "韩大哥，那一年的烟花最好看",
+      "aspect": 1.7777777777777777,
+      "revision": "77f3be593a75b580",
+      "manifest": "wallpapers/ziling-001/77f3be593a75b580/manifest.json",
+      "poster": "assets/84f68ab83a6e38a23217ce2e9d4dab8bd66d0c75ab6cfc12d24654b573f6fabe.webp",
+      "name": "紫灵",
+      "variants": [
+        {
+          "id": "full",
+          "label": "全面屏 · 高清",
+          "width": 1320,
+          "height": 2868,
+          "photo": {
+            "url": "ziling-001-full/photo.jpg",
+            "bytes": 847017,
+            "sha256": "77bc54c946e569fd732e8d6346cfe49bb7b1846d3f8195f0a295af229d54c102"
+          },
+          "video": {
+            "url": "ziling-001-full/preview.mp4",
+            "bytes": 4992548,
+            "sha256": "1827a9a99e9f8f3971af3699ea99647dfbe152a7f415bc3ea1f9884033b279d4"
+          },
+          "live": {
+            "url": "ziling-001-full/live-photo.zip",
+            "bytes": 5838133,
+            "sha256": "4f760449d834d3937c8d3494a4d492ece69f48b80f22e5c95a439b01d61ee793"
+          }
+        },
+        {
+          "id": "classic",
+          "label": "16:9 · 经典屏",
+          "width": 750,
+          "height": 1334,
+          "photo": {
+            "url": "ziling-001-classic/photo.jpg",
+            "bytes": 335665,
+            "sha256": "7cdd25daa535919cb851e1de48c6b990ed91b86b978f53286725515f590643c9"
+          },
+          "video": {
+            "url": "ziling-001-classic/preview.mp4",
+            "bytes": 4780966,
+            "sha256": "49f3a31a8b1d95d2be14f66e81edc8ed0ed6e3cb6bd2f360adf416c6b3e858d8"
+          },
+          "live": {
+            "url": "ziling-001-classic/live-photo.zip",
+            "bytes": 5116584,
+            "sha256": "4df0c349f3da6dde913f5ec970124a334ef9b19e23456aca2e1873892f0ee158"
+          }
+        }
+      ]
+    },
+    {
+      "id": "yuanyao-001",
+      "title": "元瑶 · 护道还魂",
+      "subtitle": "你只管做你想做的",
+      "aspect": 1.7777777777777777,
+      "revision": "12e39fc0303ccfd5",
+      "manifest": "wallpapers/yuanyao-001/12e39fc0303ccfd5/manifest.json",
+      "poster": "assets/48c14a4c5f3c42b85352e0a00ba14d17ba2cf68e56974fe41eab88a67a099eb7.webp",
+      "name": "元瑶",
+      "variants": [
+        {
+          "id": "full",
+          "label": "全面屏 · 高清",
+          "width": 1320,
+          "height": 2868,
+          "photo": {
+            "url": "yuanyao-001-full/photo.jpg",
+            "bytes": 1034044,
+            "sha256": "c1a8e6ea5c83cf7bffd02b6379371bce5eac7d00b442233c91917cce2768bc13"
+          },
+          "video": {
+            "url": "yuanyao-001-full/preview.mp4",
+            "bytes": 5405693,
+            "sha256": "8dbcf096eb9e946313a64f56f3302fec65d53fca7d16f640ce11827cd340ac36"
+          },
+          "live": {
+            "url": "yuanyao-001-full/live-photo.zip",
+            "bytes": 6438904,
+            "sha256": "a9b65b16e3a3e2950a315b3f57a4b32645360c1f62d4531c930fb33c88bb5332"
+          }
+        },
+        {
+          "id": "classic",
+          "label": "16:9 · 经典屏",
+          "width": 750,
+          "height": 1334,
+          "photo": {
+            "url": "yuanyao-001-classic/photo.jpg",
+            "bytes": 416883,
+            "sha256": "3de5d81a16bd0e46ca5b495f9745b369abf0ae191ff2edd04036bf484f6d5bff"
+          },
+          "video": {
+            "url": "yuanyao-001-classic/preview.mp4",
+            "bytes": 5011383,
+            "sha256": "12c55fb0934c653e64f38dad8f00a0ae93e27066ad4ec77760cf5286b36ceff6"
+          },
+          "live": {
+            "url": "yuanyao-001-classic/live-photo.zip",
+            "bytes": 5428144,
+            "sha256": "c1788b52d57bf9a36d7446f79f75462bea34ac8b7c3a210354d02b0645aa273d"
+          }
+        }
+      ]
+    },
+    {
+      "id": "nangong-001",
+      "title": "月满相逢",
+      "subtitle": "千山赴约，只为与你相望",
+      "aspect": 1.7777777777777777,
+      "revision": "b09819610f7b227f",
+      "manifest": "wallpapers/nangong-001/b09819610f7b227f/manifest.json",
+      "poster": "assets/5ef5c48a12066efa16cfcfc99f75661aa1d6680ca80abaeff991edde23b870cd.webp",
+      "name": "南宫婉",
+      "variants": [
+        {
+          "id": "full",
+          "label": "全面屏 · 高清",
+          "width": 1320,
+          "height": 2868,
+          "photo": {
+            "url": "nangong-001-full/photo.jpg",
+            "bytes": 1010397,
+            "sha256": "7e3549849a2ce9392c9926f4d664061c9fea2ec75e021ba894dbf5531587741e"
+          },
+          "video": {
+            "url": "nangong-001-full/preview.mp4",
+            "bytes": 5020032,
+            "sha256": "85017669093f234d92452d17836a06a448673973a6b7a633ea80daa8ecdbd538"
+          },
+          "live": {
+            "url": "nangong-001-full/live-photo.zip",
+            "bytes": 6030152,
+            "sha256": "8a2f23eb875eaf759e5b8b7565c16c3851f1a1b0c1cb89311f0b63280a002aa2"
+          }
+        },
+        {
+          "id": "classic",
+          "label": "16:9 · 经典屏",
+          "width": 750,
+          "height": 1334,
+          "photo": {
+            "url": "nangong-001-classic/photo.jpg",
+            "bytes": 392480,
+            "sha256": "a854def13c2fcedd8805e41967081e00004277e85450dff60f9bb7453aeb8d63"
+          },
+          "video": {
+            "url": "nangong-001-classic/preview.mp4",
+            "bytes": 4838065,
+            "sha256": "b44776d0e66011c6f45083d7284d2d2a06ada72763cc16942bc0928ed4acc76e"
+          },
+          "live": {
+            "url": "nangong-001-classic/live-photo.zip",
+            "bytes": 5230541,
+            "sha256": "28c364a38646c5a1805545c653f2641178928ba8b37bd9dff5992e1a921505df"
+          }
+        }
+      ]
+    },
+    {
+      "id": "disney-10",
+      "title": "十载奇梦",
+      "subtitle": "这一刻，烟火为你而亮",
+      "name": "迪士尼十周年",
+      "source": {
+        "url": "https://disneyparksblog.com/shdl/shanghai-disney-resort-10th-anniversary-celebration/",
+        "label": "Disney Parks Blog · 十周年官方照片",
+        "note": "官方实拍照片基础上的 AI 竖屏扩图与动态改编，非官方壁纸。"
+      },
+      "variants": [
+        {
+          "id": "iphone17pro",
+          "label": "iPhone 17 Pro",
+          "width": 1206,
+          "height": 2622,
+          "photo": {
+            "url": "disney-10-iphone17pro/photo.jpg",
+            "bytes": 876771,
+            "sha256": "c2d0e2af333e73c7b49de14969fb6ceff9e4c47d6493daef76ebbfab70c6705f"
+          },
+          "video": {
+            "url": "disney-10-iphone17pro/preview.mp4",
+            "bytes": 5174127,
+            "sha256": "e48d65c49d179de396e3107983cda3474bbb2ce011da849c2bb5348678ac762b"
+          },
+          "live": {
+            "url": "disney-10-iphone17pro/live-photo.zip",
+            "bytes": 6050034,
+            "sha256": "eab41d3a20ea474bbfe6881d580853e154df54713b5ca2222afeed0e1f884722"
+          }
+        }
+      ]
+    },
+    {
+      "id": "disney-dream",
+      "title": "星河入梦",
+      "subtitle": "把童话，留给每一次心动",
+      "name": "城堡幻梦",
+      "source": {
+        "url": "https://disneyparksblog.com/shdl/shanghai-disney-resort-10th-anniversary-celebration/",
+        "label": "十周年灵感 · 原创幻梦版",
+        "note": "AI 原创城堡烟花与动态光影，非官方实拍或活动复刻。"
+      },
+      "variants": [
+        {
+          "id": "iphone17pro",
+          "label": "iPhone 17 Pro",
+          "width": 1206,
+          "height": 2622,
+          "photo": {
+            "url": "disney-dream-iphone17pro/photo.jpg",
+            "bytes": 1128242,
+            "sha256": "9a0a0d88da4efd3e858824e1e191c68b596c2c785d3326c378c657b52086b80a"
+          },
+          "video": {
+            "url": "disney-dream-iphone17pro/preview.mp4",
+            "bytes": 5329453,
+            "sha256": "7e59e224b3b06773e30310a108fe61de41f8ee98592f4eff43587c2ce156b43c"
+          },
+          "live": {
+            "url": "disney-dream-iphone17pro/live-photo.zip",
+            "bytes": 6456327,
+            "sha256": "45eae091393fa8b4c8243988281e77a60fb010239c84ae54827f24db19a2d29b"
+          }
+        }
+      ]
+    }
+  ]
+}
